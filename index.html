@@ -4,1485 +4,1789 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>AoE4 文明教程指南 - Pansy</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%E2%9A%94%3C/text%3E%3C/svg%3E">
 <style>
-:root {
-  --gold: #d4a853;
-  --gold-light: #f0d78c;
-  --gold-dark: #a87c2f;
-  --bg-primary: #0a0a0f;
-  --bg-secondary: #141420;
-  --bg-card: #1a1a2e;
-  --bg-card-hover: #222240;
-  --text-primary: #e8e8e8;
-  --text-secondary: #a0a0b0;
-  --text-muted: #6a6a7a;
-  --border: #2a2a40;
-  --border-light: #3a3a55;
-  --accent: #d4a853;
-  --accent-glow: rgba(212, 168, 83, 0.3);
-  --success: #4caf50;
-  --danger: #f44336;
-  --info: #2196f3;
-  --warning: #ff9800;
-  --shadow: 0 4px 20px rgba(0,0,0,0.4);
-  --shadow-lg: 0 8px 40px rgba(0,0,0,0.6);
-  --radius: 12px;
-  --radius-lg: 16px;
-  --transition: all 0.3s ease;
-}
-
-[data-theme="light"] {
-  --bg-primary: #f5f5f0;
-  --bg-secondary: #ffffff;
-  --bg-card: #ffffff;
-  --bg-card-hover: #f9f6ef;
-  --text-primary: #2a2a2a;
-  --text-secondary: #555555;
-  --text-muted: #888888;
-  --border: #e0ddd5;
-  --border-light: #d0cdc5;
-  --accent: #b8860b;
-  --accent-glow: rgba(184, 134, 11, 0.2);
-  --shadow: 0 4px 20px rgba(0,0,0,0.08);
-  --shadow-lg: 0 8px 40px rgba(0,0,0,0.12);
-}
-
-* { margin: 0; padding: 0; box-sizing: border-box; }
-
-body {
-  font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
-  background: var(--bg-primary);
-  color: var(--text-primary);
-  line-height: 1.6;
-  transition: var(--transition);
-  min-height: 100vh;
-}
-
-/* Scrollbar */
-::-webkit-scrollbar { width: 8px; }
-::-webkit-scrollbar-track { background: var(--bg-secondary); }
-::-webkit-scrollbar-thumb { background: var(--gold-dark); border-radius: 4px; }
-::-webkit-scrollbar-thumb:hover { background: var(--gold); }
-
-/* Top Bar */
-.top-bar {
-  background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-card) 100%);
-  border-bottom: 2px solid var(--gold);
-  padding: 10px 20px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 10px;
-  position: sticky;
-  top: 0;
-  z-index: 1000;
-  backdrop-filter: blur(10px);
-}
-
-.top-bar-left {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-  flex-wrap: wrap;
-}
-
-.logo {
-  font-size: 1.4rem;
-  font-weight: 900;
-  color: var(--gold);
-  text-transform: uppercase;
-  letter-spacing: 2px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.logo-icon {
-  width: 32px;
-  height: 32px;
-  background: linear-gradient(135deg, var(--gold), var(--gold-dark));
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.2rem;
-}
-
-.datetime-display {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
-
-.date-text {
-  font-size: 0.85rem;
-  color: var(--text-secondary);
-  font-weight: 500;
-}
-
-.time-text {
-  font-size: 1.1rem;
-  color: var(--gold);
-  font-weight: 700;
-  font-family: 'Courier New', monospace;
-}
-
-.weather-info {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  font-size: 0.9rem;
-  color: var(--text-secondary);
-  background: var(--bg-card);
-  padding: 5px 12px;
-  border-radius: 20px;
-  border: 1px solid var(--border);
-}
-
-/* Timezone Clocks */
-.timezone-clocks {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-}
-
-.tz-clock {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  padding: 4px 10px;
-  text-align: center;
-  min-width: 75px;
-  transition: var(--transition);
-}
-
-.tz-clock:hover {
-  border-color: var(--gold);
-  box-shadow: 0 0 10px var(--accent-glow);
-}
-
-.tz-label {
-  font-size: 0.65rem;
-  color: var(--text-muted);
-  text-transform: uppercase;
-  letter-spacing: 1px;
-}
-
-.tz-time {
-  font-size: 0.85rem;
-  color: var(--gold);
-  font-weight: 700;
-  font-family: 'Courier New', monospace;
-}
-
-/* Top Bar Right */
-.top-bar-right {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  flex-wrap: wrap;
-}
-
-.btn {
-  padding: 8px 16px;
-  border-radius: 8px;
-  border: 1px solid var(--border);
-  background: var(--bg-card);
-  color: var(--text-primary);
-  font-size: 0.85rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: var(--transition);
-  text-decoration: none;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  white-space: nowrap;
-}
-
-.btn:hover {
-  border-color: var(--gold);
-  box-shadow: 0 0 15px var(--accent-glow);
-  transform: translateY(-1px);
-}
-
-.btn-primary {
-  background: linear-gradient(135deg, var(--gold), var(--gold-dark));
-  color: #000;
-  border-color: var(--gold);
-  font-weight: 700;
-}
-
-.btn-primary:hover {
-  background: linear-gradient(135deg, var(--gold-light), var(--gold));
-  box-shadow: 0 0 20px var(--accent-glow);
-}
-
-.btn-steam {
-  background: linear-gradient(135deg, #1b2838, #2a475e);
-  color: #fff;
-  border-color: #2a475e;
-}
-
-.btn-steam:hover {
-  background: linear-gradient(135deg, #2a475e, #3a6b8a);
-}
-
-.theme-toggle {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  border: 2px solid var(--border);
-  background: var(--bg-card);
-  color: var(--gold);
-  font-size: 1.2rem;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: var(--transition);
-}
-
-.theme-toggle:hover {
-  border-color: var(--gold);
-  transform: rotate(15deg);
-}
-
-/* Hero Section */
-.hero {
-  background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 50%, var(--bg-primary) 100%);
-  padding: 60px 20px;
-  text-align: center;
-  position: relative;
-  overflow: hidden;
-}
-
-.hero::before {
-  content: '';
-  position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  background: radial-gradient(circle at 30% 70%, var(--accent-glow) 0%, transparent 50%);
-  animation: pulse 8s ease-in-out infinite;
-}
-
-@keyframes pulse {
-  0%, 100% { opacity: 0.3; }
-  50% { opacity: 0.6; }
-}
-
-.hero-content {
-  position: relative;
-  z-index: 1;
-}
-
-.hero h1 {
-  font-size: clamp(2rem, 5vw, 3.5rem);
-  font-weight: 900;
-  background: linear-gradient(135deg, var(--gold), var(--gold-light), var(--gold));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  margin-bottom: 15px;
-  letter-spacing: 3px;
-}
-
-.hero p {
-  font-size: 1.2rem;
-  color: var(--text-secondary);
-  max-width: 700px;
-  margin: 0 auto 25px;
-}
-
-.hero-stats {
-  display: flex;
-  justify-content: center;
-  gap: 30px;
-  flex-wrap: wrap;
-}
-
-.hero-stat {
-  text-align: center;
-}
-
-.hero-stat-number {
-  font-size: 2rem;
-  font-weight: 900;
-  color: var(--gold);
-}
-
-.hero-stat-label {
-  font-size: 0.85rem;
-  color: var(--text-muted);
-  text-transform: uppercase;
-  letter-spacing: 1px;
-}
-
-/* Search & Filter */
-.controls-section {
-  background: var(--bg-secondary);
-  padding: 20px;
-  border-bottom: 1px solid var(--border);
-  position: sticky;
-  top: 60px;
-  z-index: 999;
-}
-
-.controls-container {
-  max-width: 1400px;
-  margin: 0 auto;
-  display: flex;
-  gap: 15px;
-  align-items: center;
-  flex-wrap: wrap;
-}
-
-.search-box {
-  flex: 1;
-  min-width: 250px;
-  position: relative;
-}
-
-.search-box input {
-  width: 100%;
-  padding: 12px 20px 12px 45px;
-  border-radius: 10px;
-  border: 2px solid var(--border);
-  background: var(--bg-card);
-  color: var(--text-primary);
-  font-size: 1rem;
-  transition: var(--transition);
-}
-
-.search-box input:focus {
-  outline: none;
-  border-color: var(--gold);
-  box-shadow: 0 0 15px var(--accent-glow);
-}
-
-.search-icon {
-  position: absolute;
-  left: 15px;
-  top: 50%;
-  transform: translateY(-50%);
-  font-size: 1.1rem;
-  color: var(--text-muted);
-}
-
-.filter-buttons {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-}
-
-.filter-btn {
-  padding: 8px 16px;
-  border-radius: 8px;
-  border: 1px solid var(--border);
-  background: var(--bg-card);
-  color: var(--text-secondary);
-  font-size: 0.85rem;
-  cursor: pointer;
-  transition: var(--transition);
-  white-space: nowrap;
-}
-
-.filter-btn.active,
-.filter-btn:hover {
-  background: var(--gold);
-  color: #000;
-  border-color: var(--gold);
-  font-weight: 600;
-}
-
-/* Main Content */
-.main-content {
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: 30px 20px;
-}
-
-/* Civilization Grid */
-.civ-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
-  gap: 20px;
-}
-
-/* Civ Card */
-.civ-card {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-  overflow: hidden;
-  transition: var(--transition);
-  position: relative;
-}
-
-.civ-card:hover {
-  border-color: var(--gold);
-  box-shadow: 0 8px 30px var(--accent-glow);
-  transform: translateY(-3px);
-}
-
-.civ-card-header {
-  padding: 20px;
-  display: flex;
-  align-items: center;
-  gap: 15px;
-  cursor: pointer;
-  position: relative;
-}
-
-.civ-icon {
-  width: 56px;
-  height: 56px;
-  border-radius: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.8rem;
-  flex-shrink: 0;
-  border: 2px solid;
-}
-
-.civ-info {
-  flex: 1;
-}
-
-.civ-name {
-  font-size: 1.3rem;
-  font-weight: 800;
-  color: var(--text-primary);
-  margin-bottom: 3px;
-}
-
-.civ-meta {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  flex-wrap: wrap;
-}
-
-.civ-difficulty {
-  font-size: 0.8rem;
-  color: var(--warning);
-  letter-spacing: 1px;
-}
-
-.civ-tag {
-  font-size: 0.7rem;
-  padding: 2px 8px;
-  border-radius: 10px;
-  background: var(--bg-secondary);
-  color: var(--text-muted);
-  border: 1px solid var(--border);
-}
-
-.civ-tag.provided {
-  background: rgba(76, 175, 80, 0.15);
-  color: var(--success);
-  border-color: var(--success);
-}
-
-.civ-tag.generated {
-  background: rgba(33, 150, 243, 0.15);
-  color: var(--info);
-  border-color: var(--info);
-}
-
-.civ-expand-icon {
-  font-size: 1.2rem;
-  color: var(--gold);
-  transition: transform 0.3s ease;
-}
-
-.civ-card.expanded .civ-expand-icon {
-  transform: rotate(180deg);
-}
-
-/* Civ Color Themes */
-.civ-card[data-civ="macedon"] .civ-icon { background: rgba(139,69,19,0.2); border-color: #8b4513; }
-.civ-card[data-civ="china"] .civ-icon { background: rgba(200,30,30,0.2); border-color: #c81e1e; }
-.civ-card[data-civ="tughluk"] .civ-icon { background: rgba(255,140,0,0.2); border-color: #ff8c00; }
-.civ-card[data-civ="france"] .civ-icon { background: rgba(30,100,200,0.2); border-color: #1e64c8; }
-.civ-card[data-civ="mali"] .civ-icon { background: rgba(180,140,60,0.2); border-color: #b48c3c; }
-.civ-card[data-civ="sengoku"] .civ-icon { background: rgba(180,30,30,0.2); border-color: #b41e1e; }
-.civ-card[data-civ="jin"] .civ-icon { background: rgba(160,20,20,0.2); border-color: #a01414; }
-.civ-card[data-civ="lancaster"] .civ-icon { background: rgba(80,80,120,0.2); border-color: #505078; }
-.civ-card[data-civ="golden_horde"] .civ-icon { background: rgba(200,160,40,0.2); border-color: #c8a028; }
-.civ-card[data-civ="rus"] .civ-icon { background: rgba(40,80,160,0.2); border-color: #2850a0; }
-.civ-card[data-civ="hre"] .civ-icon { background: rgba(120,100,40,0.2); border-color: #786428; }
-.civ-card[data-civ="byzantine"] .civ-icon { background: rgba(100,60,140,0.2); border-color: #643c8c; }
-.civ-card[data-civ="abbasid"] .civ-icon { background: rgba(20,130,80,0.2); border-color: #148250; }
-.civ-card[data-civ="japan"] .civ-icon { background: rgba(200,50,80,0.2); border-color: #c83250; }
-.civ-card[data-civ="england"] .civ-icon { background: rgba(40,40,100,0.2); border-color: #282864; }
-.civ-card[data-civ="mongol"] .civ-icon { background: rgba(60,140,60,0.2); border-color: #3c8c3c; }
-.civ-card[data-civ="delhi"] .civ-icon { background: rgba(80,60,20,0.2); border-color: #503c14; }
-.civ-card[data-civ="ottomans"] .civ-icon { background: rgba(140,40,40,0.2); border-color: #8c2828; }
-
-/* Civ Body */
-.civ-body {
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height 0.5s ease;
-}
-
-.civ-card.expanded .civ-body {
-  max-height: 5000px;
-}
-
-.civ-body-inner {
-  padding: 0 20px 20px;
-  border-top: 1px solid var(--border);
-}
-
-/* Era Section */
-.era-section {
-  margin-top: 18px;
-}
-
-.era-title {
-  font-size: 1rem;
-  font-weight: 700;
-  color: var(--gold);
-  margin-bottom: 10px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding-bottom: 5px;
-  border-bottom: 1px dashed var(--border-light);
-}
-
-.era-title .era-icon {
-  font-size: 1.2rem;
-}
-
-.era-content {
-  font-size: 0.88rem;
-  color: var(--text-secondary);
-  line-height: 1.8;
-}
-
-.era-content p {
-  margin-bottom: 8px;
-}
-
-.era-content strong {
-  color: var(--text-primary);
-}
-
-.highlight-box {
-  background: rgba(212, 168, 83, 0.08);
-  border-left: 3px solid var(--gold);
-  padding: 10px 14px;
-  margin: 10px 0;
-  border-radius: 0 8px 8px 0;
-  font-size: 0.85rem;
-}
-
-.highlight-box.tip {
-  background: rgba(33, 150, 243, 0.08);
-  border-left-color: var(--info);
-}
-
-.highlight-box.warning {
-  background: rgba(255, 152, 0, 0.08);
-  border-left-color: var(--warning);
-}
-
-/* Modal */
-.modal-overlay {
-  display: none;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0,0,0,0.7);
-  z-index: 2000;
-  backdrop-filter: blur(5px);
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
-}
-
-.modal-overlay.active {
-  display: flex;
-}
-
-.modal {
-  background: var(--bg-secondary);
-  border: 2px solid var(--gold);
-  border-radius: var(--radius-lg);
-  max-width: 800px;
-  width: 100%;
-  max-height: 85vh;
-  overflow-y: auto;
-  box-shadow: var(--shadow-lg);
-  animation: modalIn 0.3s ease;
-}
-
-@keyframes modalIn {
-  from { opacity: 0; transform: scale(0.9) translateY(20px); }
-  to { opacity: 1; transform: scale(1) translateY(0); }
-}
-
-.modal-header {
-  padding: 20px 25px;
-  border-bottom: 1px solid var(--border);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  position: sticky;
-  top: 0;
-  background: var(--bg-secondary);
-  z-index: 1;
-}
-
-.modal-title {
-  font-size: 1.4rem;
-  font-weight: 800;
-  color: var(--gold);
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.modal-close {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  border: 1px solid var(--border);
-  background: var(--bg-card);
-  color: var(--text-primary);
-  font-size: 1.2rem;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: var(--transition);
-}
-
-.modal-close:hover {
-  background: var(--danger);
-  color: #fff;
-  border-color: var(--danger);
-}
-
-.modal-body {
-  padding: 25px;
-}
-
-/* Shortcut Table */
-.shortcut-section {
-  margin-bottom: 25px;
-}
-
-.shortcut-section-title {
-  font-size: 1rem;
-  font-weight: 700;
-  color: var(--gold);
-  margin-bottom: 12px;
-  padding-bottom: 5px;
-  border-bottom: 1px solid var(--border);
-}
-
-.shortcut-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 8px;
-}
-
-.shortcut-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 6px 10px;
-  background: var(--bg-card);
-  border-radius: 6px;
-  border: 1px solid var(--border);
-}
-
-.shortcut-key {
-  font-family: 'Courier New', monospace;
-  background: var(--gold);
-  color: #000;
-  padding: 2px 8px;
-  border-radius: 4px;
-  font-size: 0.8rem;
-  font-weight: 700;
-  white-space: nowrap;
-}
-
-.shortcut-desc {
-  font-size: 0.82rem;
-  color: var(--text-secondary);
-  text-align: right;
-  margin-left: 10px;
-}
-
-/* Beginner Recommendation */
-.rec-civ-card {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 15px;
-  margin-bottom: 15px;
-  transition: var(--transition);
-}
-
-.rec-civ-card:hover {
-  border-color: var(--gold);
-  box-shadow: 0 4px 15px var(--accent-glow);
-}
-
-.rec-civ-header {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 10px;
-}
-
-.rec-civ-icon {
-  width: 42px;
-  height: 42px;
-  border-radius: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.4rem;
-  border: 2px solid;
-}
-
-.rec-civ-name {
-  font-size: 1.1rem;
-  font-weight: 700;
-  color: var(--text-primary);
-}
-
-.rec-civ-reason {
-  font-size: 0.88rem;
-  color: var(--text-secondary);
-  line-height: 1.7;
-}
-
-.rec-civ-reason strong {
-  color: var(--gold);
-}
-
-/* Footer */
-.footer {
-  background: var(--bg-secondary);
-  border-top: 2px solid var(--gold);
-  padding: 40px 20px 30px;
-  text-align: center;
-  margin-top: 60px;
-}
-
-.footer-content {
-  max-width: 800px;
-  margin: 0 auto;
-}
-
-.footer-brand {
-  font-size: 1.8rem;
-  font-weight: 900;
-  color: var(--gold);
-  letter-spacing: 3px;
-  margin-bottom: 10px;
-}
-
-.footer-tagline {
-  font-size: 0.95rem;
-  color: var(--text-muted);
-  margin-bottom: 20px;
-}
-
-.footer-links {
-  display: flex;
-  justify-content: center;
-  gap: 15px;
-  flex-wrap: wrap;
-  margin-bottom: 20px;
-}
-
-.footer-link {
-  color: var(--text-secondary);
-  text-decoration: none;
-  font-size: 0.9rem;
-  transition: var(--transition);
-  display: flex;
-  align-items: center;
-  gap: 5px;
-}
-
-.footer-link:hover {
-  color: var(--gold);
-}
-
-.footer-copyright {
-  font-size: 0.8rem;
-  color: var(--text-muted);
-  border-top: 1px solid var(--border);
-  padding-top: 15px;
-}
-
-/* Back to Top */
-.back-to-top {
-  position: fixed;
-  bottom: 30px;
-  right: 30px;
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, var(--gold), var(--gold-dark));
-  color: #000;
-  font-size: 1.4rem;
-  border: none;
-  cursor: pointer;
-  display: none;
-  align-items: center;
-  justify-content: center;
-  box-shadow: var(--shadow);
-  transition: var(--transition);
-  z-index: 1500;
-}
-
-.back-to-top.visible {
-  display: flex;
-}
-
-.back-to-top:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 6px 25px var(--accent-glow);
-}
-
-/* Responsive */
-@media (max-width: 900px) {
-  .top-bar { padding: 8px 12px; }
-  .timezone-clocks { display: none; }
-  .shortcut-grid { grid-template-columns: 1fr; }
-  .civ-grid { grid-template-columns: 1fr; }
-}
-
-@media (max-width: 600px) {
-  .hero { padding: 40px 15px; }
-  .top-bar-left .weather-info { display: none; }
-  .controls-container { flex-direction: column; }
-  .search-box { min-width: 100%; }
-}
-
-/* Animations */
-@keyframes fadeInUp {
-  from { opacity: 0; transform: translateY(30px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-.civ-card {
-  animation: fadeInUp 0.4s ease forwards;
-}
+  :root {
+    --bg-primary: #0a0a0f;
+    --bg-secondary: #13131a;
+    --bg-card: #1a1a24;
+    --bg-card-hover: #22222f;
+    --text-primary: #e8e8e8;
+    --text-secondary: #a0a0a8;
+    --text-muted: #6a6a78;
+    --accent-gold: #d4a843;
+    --accent-gold-bright: #f0c75e;
+    --accent-blue: #4a9eff;
+    --accent-green: #4ade80;
+    --accent-red: #f87171;
+    --accent-purple: #a78bfa;
+    --border-color: #2a2a38;
+    --shadow: 0 4px 20px rgba(0,0,0,0.4);
+    --shadow-glow: 0 0 30px rgba(212,168,67,0.15);
+    --radius: 12px;
+    --transition: all 0.3s ease;
+  }
+
+  [data-theme="light"] {
+    --bg-primary: #f5f5f0;
+    --bg-secondary: #ffffff;
+    --bg-card: #fafaf8;
+    --bg-card-hover: #f0f0ec;
+    --text-primary: #1a1a1a;
+    --text-secondary: #4a4a55;
+    --text-muted: #7a7a85;
+    --accent-gold: #b8860b;
+    --accent-gold-bright: #d4a843;
+    --accent-blue: #2563eb;
+    --accent-green: #16a34a;
+    --accent-red: #dc2626;
+    --accent-purple: #7c3aed;
+    --border-color: #e0e0d8;
+    --shadow: 0 4px 20px rgba(0,0,0,0.08);
+    --shadow-glow: 0 0 30px rgba(184,134,11,0.1);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    line-height: 1.6;
+    min-height: 100vh;
+    transition: background 0.3s ease, color 0.3s ease;
+  }
+
+  /* ===== TOP BAR ===== */
+  .top-bar {
+    background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-card) 100%);
+    border-bottom: 1px solid var(--border-color);
+    padding: 10px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    backdrop-filter: blur(10px);
+  }
+
+  .top-bar-left {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .top-bar-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .datetime-display {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+  }
+
+  .datetime-display .time {
+    color: var(--accent-gold);
+    font-weight: 600;
+    font-size: 0.95rem;
+  }
+
+  .weather-display {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+  }
+
+  .timezone-clocks {
+    display: flex;
+    gap: 12px;
+    font-size: 0.78rem;
+    color: var(--text-muted);
+  }
+
+  .timezone-clocks span {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2px 6px;
+    border-radius: 4px;
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+  }
+
+  .timezone-clocks .tz-label {
+    font-size: 0.65rem;
+    color: var(--text-muted);
+  }
+
+  .timezone-clocks .tz-time {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    font-weight: 500;
+  }
+
+  .top-btn {
+    padding: 8px 16px;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    background: var(--bg-card);
+    color: var(--text-primary);
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: var(--transition);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .top-btn:hover {
+    border-color: var(--accent-gold);
+    color: var(--accent-gold);
+    transform: translateY(-1px);
+  }
+
+  .top-btn.gold {
+    background: linear-gradient(135deg, var(--accent-gold), var(--accent-gold-bright));
+    color: #1a1a1a;
+    border-color: var(--accent-gold);
+    font-weight: 600;
+  }
+
+  .top-btn.gold:hover {
+    filter: brightness(1.1);
+    color: #1a1a1a;
+  }
+
+  .theme-toggle {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 1px solid var(--border-color);
+    background: var(--bg-card);
+    color: var(--text-primary);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    transition: var(--transition);
+  }
+
+  .theme-toggle:hover {
+    border-color: var(--accent-gold);
+  }
+
+  /* ===== HERO ===== */
+  .hero {
+    text-align: center;
+    padding: 60px 24px 40px;
+    background: radial-gradient(ellipse at center, rgba(212,168,67,0.08) 0%, transparent 70%);
+  }
+
+  .hero h1 {
+    font-size: 3rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, var(--accent-gold), var(--accent-gold-bright));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 12px;
+  }
+
+  .hero p {
+    font-size: 1.1rem;
+    color: var(--text-secondary);
+    max-width: 600px;
+    margin: 0 auto 24px;
+  }
+
+  .hero-stats {
+    display: flex;
+    justify-content: center;
+    gap: 32px;
+    flex-wrap: wrap;
+  }
+
+  .hero-stat {
+    text-align: center;
+  }
+
+  .hero-stat .num {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--accent-gold);
+  }
+
+  .hero-stat .label {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+  }
+
+  /* ===== CONTROLS ===== */
+  .controls {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px 24px;
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  .search-box {
+    flex: 1;
+    min-width: 250px;
+    position: relative;
+  }
+
+  .search-box input {
+    width: 100%;
+    padding: 12px 16px 12px 44px;
+    border-radius: 10px;
+    border: 1px solid var(--border-color);
+    background: var(--bg-card);
+    color: var(--text-primary);
+    font-size: 0.95rem;
+    transition: var(--transition);
+  }
+
+  .search-box input:focus {
+    outline: none;
+    border-color: var(--accent-gold);
+    box-shadow: 0 0 0 3px rgba(212,168,67,0.1);
+  }
+
+  .search-box::before {
+    content: "🔍";
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1rem;
+  }
+
+  .filter-btn {
+    padding: 10px 18px;
+    border-radius: 10px;
+    border: 1px solid var(--border-color);
+    background: var(--bg-card);
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: var(--transition);
+  }
+
+  .filter-btn:hover, .filter-btn.active {
+    border-color: var(--accent-gold);
+    color: var(--accent-gold);
+    background: rgba(212,168,67,0.05);
+  }
+
+  .action-btn {
+    padding: 10px 18px;
+    border-radius: 10px;
+    border: 1px solid var(--accent-gold);
+    background: rgba(212,168,67,0.1);
+    color: var(--accent-gold);
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: var(--transition);
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .action-btn:hover {
+    background: var(--accent-gold);
+    color: #1a1a1a;
+  }
+
+  /* ===== CIV GRID ===== */
+  .civ-grid {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px 24px 40px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 20px;
+  }
+
+  .civ-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius);
+    overflow: hidden;
+    transition: var(--transition);
+    cursor: pointer;
+  }
+
+  .civ-card:hover {
+    border-color: var(--accent-gold);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-glow);
+  }
+
+  .civ-card.expanded {
+    border-color: var(--accent-gold);
+    box-shadow: var(--shadow-glow);
+  }
+
+  .civ-header {
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .civ-icon {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.6rem;
+    flex-shrink: 0;
+    border: 2px solid;
+  }
+
+  .civ-info { flex: 1; }
+
+  .civ-name {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .civ-difficulty {
+    font-size: 0.85rem;
+    color: var(--accent-gold);
+  }
+
+  .civ-tags {
+    display: flex;
+    gap: 6px;
+    margin-top: 6px;
+    flex-wrap: wrap;
+  }
+
+  .civ-tag {
+    font-size: 0.7rem;
+    padding: 2px 8px;
+    border-radius: 10px;
+    background: rgba(74,158,255,0.1);
+    color: var(--accent-blue);
+    border: 1px solid rgba(74,158,255,0.2);
+  }
+
+  .civ-tag.variant {
+    background: rgba(167,139,250,0.1);
+    color: var(--accent-purple);
+    border-color: rgba(167,139,250,0.2);
+  }
+
+  .civ-tag.provided {
+    background: rgba(74,222,128,0.1);
+    color: var(--accent-green);
+    border-color: rgba(74,222,128,0.2);
+  }
+
+  .civ-tag.online {
+    background: rgba(248,113,113,0.1);
+    color: var(--accent-red);
+    border-color: rgba(248,113,113,0.2);
+  }
+
+  .civ-arrow {
+    font-size: 1.2rem;
+    color: var(--text-muted);
+    transition: transform 0.3s ease;
+  }
+
+  .civ-card.expanded .civ-arrow {
+    transform: rotate(180deg);
+  }
+
+  .civ-body {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease;
+  }
+
+  .civ-card.expanded .civ-body {
+    max-height: 5000px;
+  }
+
+  .civ-content {
+    padding: 0 20px 20px;
+    border-top: 1px solid var(--border-color);
+  }
+
+  .era-section {
+    margin-top: 16px;
+  }
+
+  .era-title {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--accent-gold);
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .era-content {
+    font-size: 0.88rem;
+    color: var(--text-secondary);
+    line-height: 1.8;
+    white-space: pre-line;
+  }
+
+  .era-content strong {
+    color: var(--text-primary);
+  }
+
+  .civ-links {
+    margin-top: 12px;
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .civ-link {
+    font-size: 0.78rem;
+    padding: 4px 10px;
+    border-radius: 6px;
+    background: var(--bg-secondary);
+    color: var(--accent-blue);
+    text-decoration: none;
+    border: 1px solid var(--border-color);
+    transition: var(--transition);
+  }
+
+  .civ-link:hover {
+    border-color: var(--accent-blue);
+    background: rgba(74,158,255,0.05);
+  }
+
+  /* ===== MAP POOL ===== */
+  .map-pool-section {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px 24px;
+  }
+
+  .section-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .season-info {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius);
+    padding: 20px;
+    margin-bottom: 20px;
+  }
+
+  .season-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .season-name {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--accent-gold);
+  }
+
+  .season-date {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+  }
+
+  .season-progress {
+    height: 6px;
+    background: var(--bg-secondary);
+    border-radius: 3px;
+    overflow: hidden;
+    margin-bottom: 6px;
+  }
+
+  .season-progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent-gold), var(--accent-gold-bright));
+    border-radius: 3px;
+    transition: width 1s ease;
+  }
+
+  .season-progress-text {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+  }
+
+  .map-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 12px;
+  }
+
+  .map-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    padding: 14px;
+    cursor: pointer;
+    transition: var(--transition);
+  }
+
+  .map-card:hover {
+    border-color: var(--accent-gold);
+  }
+
+  .map-card.expanded {
+    border-color: var(--accent-gold);
+  }
+
+  .map-name {
+    font-weight: 600;
+    color: var(--text-primary);
+    font-size: 0.95rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .map-type {
+    font-size: 0.7rem;
+    padding: 2px 6px;
+    border-radius: 4px;
+    margin-top: 4px;
+    display: inline-block;
+  }
+
+  .map-type.open { background: rgba(248,113,71,0.15); color: #f87147; }
+  .map-type.closed { background: rgba(74,158,255,0.15); color: var(--accent-blue); }
+  .map-type.mixed { background: rgba(167,139,250,0.15); color: var(--accent-purple); }
+  .map-type.water { background: rgba(74,222,128,0.15); color: var(--accent-green); }
+
+  .map-preview {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+  }
+
+  .map-card.expanded .map-preview {
+    max-height: 300px;
+  }
+
+  .map-preview-content {
+    padding-top: 10px;
+    font-size: 0.82rem;
+    color: var(--text-secondary);
+  }
+
+  /* ===== LEADERBOARD ===== */
+  .leaderboard-section {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px 24px 40px;
+  }
+
+  .lb-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+
+  .lb-table th {
+    background: var(--bg-secondary);
+    padding: 12px 16px;
+    text-align: left;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    font-weight: 600;
+    border-bottom: 1px solid var(--border-color);
+  }
+
+  .lb-table td {
+    padding: 12px 16px;
+    font-size: 0.9rem;
+    border-bottom: 1px solid var(--border-color);
+    color: var(--text-secondary);
+  }
+
+  .lb-table tr:hover td {
+    background: var(--bg-card-hover);
+  }
+
+  .lb-rank {
+    font-weight: 700;
+    color: var(--accent-gold);
+  }
+
+  .lb-civ {
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+
+  .lb-winrate {
+    font-weight: 600;
+  }
+
+  .lb-winrate.high { color: var(--accent-green); }
+  .lb-winrate.mid { color: var(--accent-gold); }
+  .lb-winrate.low { color: var(--accent-red); }
+
+  .lb-tier {
+    font-size: 0.75rem;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-weight: 600;
+  }
+
+  .lb-tier.s { background: rgba(248,113,71,0.15); color: #f87147; }
+  .lb-tier.a { background: rgba(212,168,67,0.15); color: var(--accent-gold); }
+  .lb-tier.b { background: rgba(74,158,255,0.15); color: var(--accent-blue); }
+  .lb-tier.c { background: rgba(106,106,120,0.15); color: var(--text-muted); }
+
+  .lb-update {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    margin-top: 8px;
+  }
+
+  /* ===== MODAL ===== */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.7);
+    backdrop-filter: blur(4px);
+    z-index: 200;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+  }
+
+  .modal-overlay.active {
+    display: flex;
+  }
+
+  .modal {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius);
+    padding: 28px;
+    max-width: 600px;
+    width: 100%;
+    max-height: 80vh;
+    overflow-y: auto;
+    box-shadow: var(--shadow);
+  }
+
+  .modal h2 {
+    font-size: 1.3rem;
+    color: var(--accent-gold);
+    margin-bottom: 16px;
+  }
+
+  .modal-close {
+    float: right;
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 0;
+    line-height: 1;
+  }
+
+  .modal-close:hover { color: var(--text-primary); }
+
+  .shortcut-category {
+    margin-bottom: 16px;
+  }
+
+  .shortcut-category h3 {
+    font-size: 0.95rem;
+    color: var(--accent-blue);
+    margin-bottom: 8px;
+  }
+
+  .shortcut-list {
+    display: grid;
+    gap: 6px;
+  }
+
+  .shortcut-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px 10px;
+    background: var(--bg-card);
+    border-radius: 6px;
+    font-size: 0.85rem;
+  }
+
+  .shortcut-key {
+    background: var(--bg-primary);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    padding: 2px 8px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--accent-gold);
+    font-family: monospace;
+  }
+
+  .recommendation-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    padding: 16px;
+    margin-bottom: 12px;
+  }
+
+  .recommendation-card h4 {
+    color: var(--accent-gold);
+    font-size: 1rem;
+    margin-bottom: 6px;
+  }
+
+  .recommendation-card p {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+  }
+
+  /* ===== FOOTER ===== */
+  .footer {
+    text-align: center;
+    padding: 30px 24px;
+    border-top: 1px solid var(--border-color);
+    background: var(--bg-secondary);
+  }
+
+  .footer p {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+  }
+
+  .footer .signature {
+    color: var(--accent-gold);
+    font-weight: 700;
+    font-size: 1.1rem;
+    margin-bottom: 4px;
+  }
+
+  .footer-links {
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+  }
+
+  .footer-links a {
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 0.85rem;
+    transition: var(--transition);
+  }
+
+  .footer-links a:hover {
+    color: var(--accent-gold);
+  }
+
+  /* ===== BACK TO TOP ===== */
+  .back-to-top {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: var(--accent-gold);
+    color: #1a1a1a;
+    border: none;
+    font-size: 1.3rem;
+    cursor: pointer;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    box-shadow: var(--shadow);
+    transition: var(--transition);
+    z-index: 50;
+  }
+
+  .back-to-top.visible {
+    display: flex;
+  }
+
+  .back-to-top:hover {
+    filter: brightness(1.1);
+    transform: scale(1.05);
+  }
+
+  /* ===== RESPONSIVE ===== */
+  @media (max-width: 768px) {
+    .hero h1 { font-size: 2rem; }
+    .top-bar { padding: 8px 12px; }
+    .timezone-clocks { display: none; }
+    .civ-grid { grid-template-columns: 1fr; }
+    .controls { flex-direction: column; }
+    .search-box { min-width: 100%; }
+  }
+
+  /* ===== ANIMATIONS ===== */
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .civ-card {
+    animation: fadeInUp 0.4s ease forwards;
+  }
+
+  .lb-table-container {
+    overflow-x: auto;
+  }
 </style>
 </head>
 <body>
 
-<!-- Top Bar -->
+<!-- ===== TOP BAR ===== -->
 <div class="top-bar">
   <div class="top-bar-left">
-    <div class="logo">
-      <div class="logo-icon">⚔️</div>
-      AoE4
-    </div>
     <div class="datetime-display">
-      <div class="date-text" id="dateDisplay">--</div>
-      <div class="time-text" id="timeDisplay">--:--:--</div>
+      <span id="currentDate">--</span>
+      <span class="time" id="currentTime">--:--:--</span>
     </div>
-    <div class="weather-info">
+    <div class="weather-display" id="weatherDisplay">
       <span>🌤️</span>
-      <span id="weatherText">晴朗 24°C</span>
+      <span id="weatherText">晴朗 26°C</span>
+    </div>
+    <div class="timezone-clocks">
+      <span><span class="tz-label">🇨🇳 北京</span><span class="tz-time" id="tzBeijing">--:--</span></span>
+      <span><span class="tz-label">🇯🇵 东京</span><span class="tz-time" id="tzTokyo">--:--</span></span>
+      <span><span class="tz-label">🇬🇧 伦敦</span><span class="tz-time" id="tzLondon">--:--</span></span>
+      <span><span class="tz-label">🇺🇸 美国</span><span class="tz-time" id="tzUS">--:--</span></span>
+      <span><span class="tz-label">🌐 UTC</span><span class="tz-time" id="tzUTC">--:--</span></span>
     </div>
   </div>
-
-  <div class="timezone-clocks">
-    <div class="tz-clock">
-      <div class="tz-label">🇨🇳 北京</div>
-      <div class="tz-time" id="tzBeijing">--:--</div>
-    </div>
-    <div class="tz-clock">
-      <div class="tz-label">🇯🇵 东京</div>
-      <div class="tz-time" id="tzTokyo">--:--</div>
-    </div>
-    <div class="tz-clock">
-      <div class="tz-label">🇬🇧 伦敦</div>
-      <div class="tz-time" id="tzLondon">--:--</div>
-    </div>
-    <div class="tz-clock">
-      <div class="tz-label">🇺🇸 美国</div>
-      <div class="tz-time" id="tzUSEast">--:--</div>
-    </div>
-    <div class="tz-clock">
-      <div class="tz-label">🌐 UTC</div>
-      <div class="tz-time" id="tzUTC">--:--</div>
-    </div>
-  </div>
-
   <div class="top-bar-right">
-    <a href="https://aoe4world.com/" target="_blank" rel="noopener" class="btn btn-primary">
-      🌐 AoE4 World
-    </a>
-    <a href="https://steamcommunity.com/profiles/76561199115848874/" target="_blank" rel="noopener" class="btn btn-steam">
-      🎮 Steam
-    </a>
-    <button class="btn" onclick="openModal('shortcutModal')">
-      ⌨️ 快捷键
-    </button>
-    <button class="btn" onclick="openModal('beginnerModal')">
-      ⭐ 新手推荐
-    </button>
+    <a href="https://aoe4world.com/" target="_blank" rel="noopener" class="top-btn gold">🌐 AoE4 World</a>
+    <a href="https://steamcommunity.com/profiles/76561199115848874/" target="_blank" rel="noopener" class="top-btn">🎮 Steam</a>
     <button class="theme-toggle" id="themeToggle" title="切换明暗模式">🌙</button>
   </div>
 </div>
 
-<!-- Hero -->
+<!-- ===== HERO ===== -->
 <div class="hero">
-  <div class="hero-content">
-    <h1>⚔️ 帝国时代 IV ⚔️</h1>
-    <p>全面文明的教程指南 · 涵盖暗黑/封建/城堡/帝王各时代开局流程</p>
-    <div class="hero-stats">
-      <div class="hero-stat">
-        <div class="hero-stat-number" id="civCount">18</div>
-        <div class="hero-stat-label">文明数量</div>
-      </div>
-      <div class="hero-stat">
-        <div class="hero-stat-number">4</div>
-        <div class="hero-stat-label">时代覆盖</div>
-      </div>
-      <div class="hero-stat">
-        <div class="hero-stat-number">★</div>
-        <div class="hero-stat-label">难度标注</div>
-      </div>
-    </div>
+  <h1>⚔️ AoE4 文明教程指南</h1>
+  <p>帝国时代4 全文明开局部署流程 · 快捷键 · 地图池 · 胜率排行</p>
+  <div class="hero-stats">
+    <div class="hero-stat"><div class="num" id="civCount">18</div><div class="label">文明教程</div></div>
+    <div class="hero-stat"><div class="num">4</div><div class="label">时代阶段</div></div>
+    <div class="hero-stat"><div class="num">∞</div><div class="label">实战可能</div></div>
   </div>
 </div>
 
-<!-- Controls -->
-<div class="controls-section">
-  <div class="controls-container">
-    <div class="search-box">
-      <span class="search-icon">🔍</span>
-      <input type="text" id="searchInput" placeholder="搜索文明名称...">
-    </div>
-    <div class="filter-buttons">
-      <button class="filter-btn active" data-filter="all">全部</button>
-      <button class="filter-btn" data-filter="easy">★ 简单</button>
-      <button class="filter-btn" data-filter="medium">★★ 中等</button>
-      <button class="filter-btn" data-filter="hard">★★★ 困难</button>
-      <button class="filter-btn" data-filter="provided">已提供教程</button>
-    </div>
+<!-- ===== CONTROLS ===== -->
+<div class="controls">
+  <div class="search-box">
+    <input type="text" id="searchInput" placeholder="搜索文明名称...">
   </div>
+  <button class="filter-btn active" data-filter="all">全部</button>
+  <button class="filter-btn" data-filter="provided">✅ 已提供教程</button>
+  <button class="filter-btn" data-filter="online">🌐 网上教程</button>
+  <button class="filter-btn" data-filter="variant">🔄 变体文明</button>
+  <button class="filter-btn" data-filter="easy">★ 简单</button>
+  <button class="filter-btn" data-filter="medium">★★ 中等</button>
+  <button class="filter-btn" data-filter="hard">★★★ 困难</button>
+  <button class="action-btn" id="shortcutBtn">⌨️ 快捷键</button>
+  <button class="action-btn" id="recommendBtn">⭐ 新手推荐</button>
 </div>
 
-<!-- Main Content -->
-<div class="main-content">
-  <div class="civ-grid" id="civGrid"></div>
+<!-- ===== CIV GRID ===== -->
+<div class="civ-grid" id="civGrid"></div>
+
+<!-- ===== MAP POOL ===== -->
+<div class="map-pool-section">
+  <div class="section-title">🗺️ 当前赛季地图池</div>
+  <div class="season-info">
+    <div class="season-header">
+      <div class="season-name" id="seasonName">夏季赛季 2026</div>
+      <div class="season-date" id="seasonDate">6月1日 — 8月31日</div>
+    </div>
+    <div class="season-progress">
+      <div class="season-progress-bar" id="seasonProgress" style="width: 0%"></div>
+    </div>
+    <div class="season-progress-text" id="seasonProgressText">加载中...</div>
+  </div>
+
+  <div style="margin-bottom: 12px; font-weight: 600; color: var(--text-primary);">1v1 地图池</div>
+  <div class="map-grid" id="mapGrid1v1"></div>
+
+  <div style="margin: 20px 0 12px; font-weight: 600; color: var(--text-primary);">团队地图池</div>
+  <div class="map-grid" id="mapGridTeam"></div>
 </div>
 
-<!-- Footer -->
+<!-- ===== LEADERBOARD ===== -->
+<div class="leaderboard-section">
+  <div class="section-title">📊 当前赛季文明胜率排行榜</div>
+  <div class="lb-table-container">
+    <table class="lb-table" id="lbTable">
+      <thead>
+        <tr>
+          <th>排名</th>
+          <th>文明</th>
+          <th>胜率</th>
+          <th>选取率</th>
+          <th>强度</th>
+        </tr>
+      </thead>
+      <tbody id="lbBody"></tbody>
+    </table>
+  </div>
+  <div class="lb-update" id="lbUpdate">数据来源：AoE4 World · 征服者段位以上 · 数据每6小时自动更新</div>
+</div>
+
+<!-- ===== FOOTER ===== -->
 <div class="footer">
-  <div class="footer-content">
-    <div class="footer-brand">PANSY</div>
-    <div class="footer-tagline">帝国时代 IV 文明教程指南 · 由 Pansy 精心整理</div>
-    <div class="footer-links">
-      <a href="https://aoe4world.com/" target="_blank" rel="noopener" class="footer-link">🌐 AoE4 World</a>
-      <a href="https://steamcommunity.com/profiles/76561199115848874/" target="_blank" rel="noopener" class="footer-link">🎮 我的 Steam</a>
-      <a href="#" onclick="openModal('shortcutModal');return false;" class="footer-link">⌨️ 快捷键参考</a>
-      <a href="#" onclick="openModal('beginnerModal');return false;" class="footer-link">⭐ 新手推荐</a>
-    </div>
-    <div class="footer-copyright">
-      © 2026 Pansy's AoE4 Guide · 非官方粉丝制作 · Age of Empires IV © Microsoft
-    </div>
+  <div class="signature">Pansy</div>
+  <p>帝国时代4 文明教程指南 · 数据仅供参考</p>
+  <div class="footer-links">
+    <a href="https://aoe4world.com/" target="_blank" rel="noopener">AoE4 World</a>
+    <a href="https://steamcommunity.com/profiles/76561199115848874/" target="_blank" rel="noopener">我的 Steam</a>
+    <a href="https://www.bilibili.com/" target="_blank" rel="noopener">B站教程</a>
   </div>
 </div>
 
-<!-- Back to Top -->
+<!-- ===== BACK TO TOP ===== -->
 <button class="back-to-top" id="backToTop">↑</button>
 
-<!-- Shortcut Modal -->
+<!-- ===== MODALS ===== -->
 <div class="modal-overlay" id="shortcutModal">
   <div class="modal">
-    <div class="modal-header">
-      <div class="modal-title">⌨️ 游戏快捷键参考</div>
-      <button class="modal-close" onclick="closeModal('shortcutModal')">✕</button>
+    <button class="modal-close" data-close>×</button>
+    <h2>⌨️ 游戏快捷键参考</h2>
+    <div class="shortcut-category">
+      <h3>基础操作</h3>
+      <div class="shortcut-list">
+        <div class="shortcut-item"><span>选择所有闲置农民</span><span class="shortcut-key">.</span></div>
+        <div class="shortcut-item"><span>选择所有军事单位</span><span class="shortcut-key">Ctrl+~</span></div>
+        <div class="shortcut-item"><span>选择所有可视单位</span><span class="shortcut-key">Ctrl+Alt+~</span></div>
+        <div class="shortcut-item"><span>攻击移动</span><span class="shortcut-key">A</span></div>
+        <div class="shortcut-item"><span>站立射击</span><span class="shortcut-key">S</span></div>
+        <div class="shortcut-item"><span>巡逻</span><span class="shortcut-key">P</span></div>
+      </div>
     </div>
-    <div class="modal-body">
-      <div class="shortcut-section">
-        <div class="shortcut-section-title">🖱️ 基础操作</div>
-        <div class="shortcut-grid">
-          <div class="shortcut-item"><span class="shortcut-key">左键</span><span class="shortcut-desc">选择单位/建筑</span></div>
-          <div class="shortcut-item"><span class="shortcut-key">右键</span><span class="shortcut-desc">移动/攻击/采集</span></div>
-          <div class="shortcut-item"><span class="shortcut-key">A + 左键</span><span class="shortcut-desc">攻击移动</span></div>
-          <div class="shortcut-item"><span class="shortcut-key">空格</span><span class="shortcut-desc">回到城镇中心</span></div>
-          <div class="shortcut-item"><span class="shortcut-key">F1</span><span class="shortcut-desc">选择所有空闲农民</span></div>
-          <div class="shortcut-item"><span class="shortcut-key">F2</span><span class="shortcut-desc">选择所有陆军</span></div>
-          <div class="shortcut-item"><span class="shortcut-key">F3</span><span class="shortcut-desc">选择所有海军</span></div>
-          <div class="shortcut-item"><span class="shortcut-key">F4</span><span class="shortcut-desc">选择所有侦察兵</span></div>
-        </div>
+    <div class="shortcut-category">
+      <h3>建造快捷键</h3>
+      <div class="shortcut-list">
+        <div class="shortcut-item"><span>城镇中心</span><span class="shortcut-key">H</span></div>
+        <div class="shortcut-item"><span>房屋</span><span class="shortcut-key">E</span></div>
+        <div class="shortcut-item"><span>磨坊</span><span class="shortcut-key">G</span></div>
+        <div class="shortcut-item"><span>伐木场</span><span class="shortcut-key">J</span></div>
+        <div class="shortcut-item"><span>采矿场</span><span class="shortcut-key">K</span></div>
+        <div class="shortcut-item"><span>兵营</span><span class="shortcut-key">B</span></div>
+        <div class="shortcut-item"><span>马厩</span><span class="shortcut-key">V</span></div>
+        <div class="shortcut-item"><span>铁匠铺</span><span class="shortcut-key">U</span></div>
+        <div class="shortcut-item"><span>哨塔</span><span class="shortcut-key">T</span></div>
+        <div class="shortcut-item"><span>码头</span><span class="shortcut-key">D</span></div>
       </div>
-      <div class="shortcut-section">
-        <div class="shortcut-section-title">🏗️ 建造快捷键</div>
-        <div class="shortcut-grid">
-          <div class="shortcut-item"><span class="shortcut-key">B → T</span><span class="shortcut-desc">建造城镇中心</span></div>
-          <div class="shortcut-item"><span class="shortcut-key">B → H</span><span class="shortcut-desc">建造房屋</span></div>
-          <div class="shortcut-item"><span class="shortcut-key">B → F</span><span class="shortcut-desc">建造磨坊</span></div>
-          <div class="shortcut-item"><span class="shortcut-key">B → L</span><span class="shortcut-desc">建造伐木场</span></div>
-          <div class="shortcut-item"><span class="shortcut-key">B → M</span><span class="shortcut-desc">建造采矿场</span></div>
-          <div class="shortcut-item"><span class="shortcut-key">B → W</span><span class="shortcut-desc">建造城墙</span></div>
-          <div class="shortcut-item"><span class="shortcut-key">B → G</span><span class="shortcut-desc">建造箭塔</span></div>
-          <div class="shortcut-item"><span class="shortcut-key">B → S</span><span class="shortcut-desc">建造兵营</span></div>
-          <div class="shortcut-item"><span class="shortcut-key">B → A</span><span class="shortcut-desc">建造铁匠铺</span></div>
-          <div class="shortcut-item"><span class="shortcut-key">B → R</span><span class="shortcut-desc">建造马厩</span></div>
-          <div class="shortcut-item"><span class="shortcut-key">B → O</span><span class="shortcut-desc">建造修道院</span></div>
-          <div class="shortcut-item"><span class="shortcut-key">B → E</span><span class="shortcut-desc">建造市场</span></div>
-        </div>
+    </div>
+    <div class="shortcut-category">
+      <h3>军事操作</h3>
+      <div class="shortcut-list">
+        <div class="shortcut-item"><span>驻防建筑</span><span class="shortcut-key">G</span></div>
+        <div class="shortcut-item"><span>卸载运输船</span><span class="shortcut-key">U</span></div>
+        <div class="shortcut-item"><span>自动攻击</span><span class="shortcut-key">A</span></div>
+        <div class="shortcut-item"><span>聚焦侦察</span><span class="shortcut-key">F</span></div>
+        <div class="shortcut-item"><span>治疗/修复</span><span class="shortcut-key">R</span></div>
       </div>
-      <div class="shortcut-section">
-        <div class="shortcut-section-title">⚔️ 军事操作</div>
-        <div class="shortcut-grid">
-          <div class="shortcut-item"><span class="shortcut-key">Ctrl + 1~9</span><span class="shortcut-desc">编队保存</span></div>
-          <div class="shortcut-item"><span class="shortcut-key">1~9</span><span class="shortcut-desc">选择编队</span></div>
-          <div class="shortcut-item"><span class="shortcut-key">Q</span><span class="shortcut-desc">生产近战单位</span></div>
-          <div class="shortcut-item"><span class="shortcut-key">W</span><span class="shortcut-desc">生产远程单位</span></div>
-          <div class="shortcut-item"><span class="shortcut-key">E</span><span class="shortcut-desc">生产骑兵单位</span></div>
-          <div class="shortcut-item"><span class="shortcut-key">R</span><span class="shortcut-desc">生产攻城武器</span></div>
-          <div class="shortcut-item"><span class="shortcut-key">T</span><span class="shortcut-desc">生产特殊单位</span></div>
-          <div class="shortcut-item"><span class="shortcut-key">Tab</span><span class="shortcut-desc">切换单位类型</span></div>
-        </div>
+    </div>
+    <div class="shortcut-category">
+      <h3>游戏控制</h3>
+      <div class="shortcut-list">
+        <div class="shortcut-item"><span>暂停/菜单</span><span class="shortcut-key">Esc</span></div>
+        <div class="shortcut-item"><span>聊天</span><span class="shortcut-key">Enter</span></div>
+        <div class="shortcut-item"><span>联盟聊天</span><span class="shortcut-key">Shift+Enter</span></div>
+        <div class="shortcut-item"><span>显示人口</span><span class="shortcut-key">F2</span></div>
+        <div class="shortcut-item"><span>显示资源</span><span class="shortcut-key">F3</span></div>
+        <div class="shortcut-item"><span>显示目标</span><span class="shortcut-key">F4</span></div>
+        <div class="shortcut-item"><span>截图</span><span class="shortcut-key">Print</span></div>
       </div>
-      <div class="shortcut-section">
-        <div class="shortcut-section-title">🎮 游戏控制</div>
-        <div class="shortcut-grid">
-          <div class="shortcut-item"><span class="shortcut-key">F5</span><span class="shortcut-desc">快速保存</span></div>
-          <div class="shortcut-item"><span class="shortcut-key">F9</span><span class="shortcut-desc">快速读取</span></div>
-          <div class="shortcut-item"><span class="shortcut-key">Esc</span><span class="shortcut-desc">打开菜单</span></div>
-          <div class="shortcut-item"><span class="shortcut-key">Enter</span><span class="shortcut-desc">聊天框</span></div>
-          <div class="shortcut-item"><span class="shortcut-key">Ctrl + Enter</span><span class="shortcut-desc">全体聊天</span></div>
-          <div class="shortcut-item"><span class="shortcut-key">P</span><span class="shortcut-desc">暂停游戏</span></div>
-          <div class="shortcut-item"><span class="shortcut-key">+</span><span class="shortcut-desc">加速游戏</span></div>
-          <div class="shortcut-item"><span class="shortcut-key">-</span><span class="shortcut-desc">减速游戏</span></div>
-        </div>
+    </div>
+    <div class="shortcut-category">
+      <h3>编队与视角</h3>
+      <div class="shortcut-list">
+        <div class="shortcut-item"><span>创建编队</span><span class="shortcut-key">Ctrl+1~9</span></div>
+        <div class="shortcut-item"><span>选择编队</span><span class="shortcut-key">1~9</span></div>
+        <div class="shortcut-item"><span>添加编队</span><span class="shortcut-key">Shift+1~9</span></div>
+        <div class="shortcut-item"><span>主城视角</span><span class="shortcut-key">Ctrl+F1</span></div>
+        <div class="shortcut-item"><span>建筑视角</span><span class="shortcut-key">Ctrl+F2</span></div>
       </div>
-      <div class="shortcut-section">
-        <div class="shortcut-section-title">👨‍🌾 农民专属</div>
-        <div class="shortcut-grid">
-          <div class="shortcut-item"><span class="shortcut-key">G</span><span class="shortcut-desc">集结点设置</span></div>
-          <div class="shortcut-item"><span class="shortcut-key">Shift + 右键</span><span class="shortcut-desc">连续指令队列</span></div>
-          <div class="shortcut-item"><span class="shortcut-key">Ctrl + 左键</span><span class="shortcut-desc">多选同类单位</span></div>
-          <div class="shortcut-item"><span class="shortcut-key">Alt + 左键</span><span class="shortcut-desc">强制攻击/移动</span></div>
-        </div>
+    </div>
+    <div class="shortcut-category">
+      <h3>农民专属</h3>
+      <div class="shortcut-list">
+        <div class="shortcut-item"><span>建造城镇中心</span><span class="shortcut-key">H</span></div>
+        <div class="shortcut-item"><span>建造房屋</span><span class="shortcut-key">E</span></div>
+        <div class="shortcut-item"><span>建造磨坊</span><span class="shortcut-key">G</span></div>
+        <div class="shortcut-item"><span>建造伐木场</span><span class="shortcut-key">J</span></div>
+        <div class="shortcut-item"><span>建造采矿场</span><span class="shortcut-key">K</span></div>
+        <div class="shortcut-item"><span>返回采集</span><span class="shortcut-key">空格</span></div>
       </div>
     </div>
   </div>
 </div>
 
-<!-- Beginner Modal -->
-<div class="modal-overlay" id="beginnerModal">
+<div class="modal-overlay" id="recommendModal">
   <div class="modal">
-    <div class="modal-header">
-      <div class="modal-title">⭐ 新手推荐文明</div>
-      <button class="modal-close" onclick="closeModal('beginnerModal')">✕</button>
+    <button class="modal-close" data-close>×</button>
+    <h2>⭐ 新手推荐文明</h2>
+    <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 16px;">以下文明操作简单、经济直观，适合刚接触帝国时代4的玩家：</p>
+
+    <div class="recommendation-card">
+      <h4>🏴󠁧󠁢󠁥󠁮󠁧󠁿 英格兰 — 最简单上手</h4>
+      <p><strong>推荐理由：</strong>经济简单直接，长弓兵是新手福音。议会厅自动生产长弓，你只需要管农民分配。9肉11木的满效率配方极其容易记忆。城堡时代有城墙防御加成，容错率高。</p>
     </div>
-    <div class="modal-body">
-      <p style="color:var(--text-secondary);margin-bottom:20px;font-size:0.95rem;">
-        以下文明最适合刚接触帝国时代4的玩家，上手难度低、经济稳定、军事体系直观。
-      </p>
 
-      <div class="rec-civ-card">
-        <div class="rec-civ-header">
-          <div class="rec-civ-icon" style="background:rgba(40,40,100,0.2);border-color:#282864;">🏴󠁧󠁢󠁥󠁮󠁧󠁿</div>
-          <div>
-            <div class="rec-civ-name">英格兰 ★☆☆</div>
-            <div style="font-size:0.8rem;color:var(--text-muted);">难度：简单 | 推荐指数：⭐⭐⭐⭐⭐</div>
-          </div>
-        </div>
-        <div class="rec-civ-reason">
-          <strong>推荐理由：</strong>农民自带短弓可自卫，长弓兵是游戏最强远程单位之一，拒马让骑兵难以冲脸。经济以农田为主，稳定可靠。整体节奏<strong>稳扎稳打</strong>，不需要复杂的多线操作，非常适合学习游戏基础机制。
-        </div>
-      </div>
+    <div class="recommendation-card">
+      <h4>🇫🇷 法兰西 — 骑兵碾压</h4>
+      <p><strong>推荐理由：</strong>皇家骑士是游戏最强前期骑兵之一。经济围绕羊+鹿+金矿运转，逻辑清晰。骑士学校地标直接产出骑士，不需要微操生产。</p>
+    </div>
 
-      <div class="rec-civ-card">
-        <div class="rec-civ-header">
-          <div class="rec-civ-icon" style="background:rgba(30,100,200,0.2);border-color:#1e64c8;">🇫🇷</div>
-          <div>
-            <div class="rec-civ-name">法兰西 ★☆☆</div>
-            <div style="font-size:0.8rem;color:var(--text-muted);">难度：简单 | 推荐指数：⭐⭐⭐⭐⭐</div>
-          </div>
-        </div>
-        <div class="rec-civ-reason">
-          <strong>推荐理由：</strong>封建时代即可出皇家骑士，重骑压制力极强。经济科技便宜，村民生产随时代加速。玩法直观——<strong>出骑士→冲脸→滚雪球</strong>，是最容易获得"爽感"的文明。
-        </div>
-      </div>
+    <div class="recommendation-card">
+      <h4>🛡️ 马其顿王朝 — 稳健发展</h4>
+      <p><strong>推荐理由：</strong>瓦兰吉军营提供稳定金币收入，大酒庄经济简单粗暴。不需要复杂的经济科技规划，按流程走就能顺利上城。</p>
+    </div>
 
-      <div class="rec-civ-card">
-        <div class="rec-civ-header">
-          <div class="rec-civ-icon" style="background:rgba(139,69,19,0.2);border-color:#8b4513;">🛡️</div>
-          <div>
-            <div class="rec-civ-name">马其顿王朝 ★★☆</div>
-            <div style="font-size:0.8rem;color:var(--text-muted);">难度：中等 | 推荐指数：⭐⭐⭐⭐</div>
-          </div>
-        </div>
-        <div class="rec-civ-reason">
-          <strong>推荐理由：</strong>瓦兰吉军营体系独特，大酒庄经济转型灵活。教程流程清晰，<strong>8肉2金→双马厩出瑞塔利</strong>的节奏容易掌握，适合想尝试东欧风格的玩家。
-        </div>
-      </div>
+    <div class="recommendation-card">
+      <h4>🌹 兰开斯特 — 资源爆发</h4>
+      <p><strong>推荐理由：</strong>城堡开局经济极其富裕，容错率极高。即使操作失误也能靠资源优势翻盘。适合学习经济调配的玩家。</p>
+    </div>
 
-      <div class="rec-civ-card">
-        <div class="rec-civ-header">
-          <div class="rec-civ-icon" style="background:rgba(80,80,120,0.2);border-color:#505078;">🏰</div>
-          <div>
-            <div class="rec-civ-name">兰开斯特 ★☆☆</div>
-            <div style="font-size:0.8rem;color:var(--text-muted);">难度：简单 | 推荐指数：⭐⭐⭐⭐</div>
-          </div>
-        </div>
-        <div class="rec-civ-reason">
-          <strong>推荐理由：</strong>城堡地标直接给防御优势，经济转换简单（6肉3金→9肉3金上本），后期余钱多容错高。<strong>适合喜欢防御反击打法</strong>的玩家。
-        </div>
-      </div>
+    <div class="recommendation-card">
+      <h4>🇨🇳 中国 — 多元体验</h4>
+      <p><strong>推荐理由：</strong>朝廷命官税收系统独特有趣，翰林院监督机制培养多线操作能力。四个朝代各有特色，可玩性极高，适合想深入了解游戏的玩家。</p>
+    </div>
 
-      <div class="rec-civ-card">
-        <div class="rec-civ-header">
-          <div class="rec-civ-icon" style="background:rgba(160,20,20,0.2);border-color:#a01414;">🐎</div>
-          <div>
-            <div class="rec-civ-name">金朝 ★★☆</div>
-            <div style="font-size:0.8rem;color:var(--text-muted);">难度：中等 | 推荐指数：⭐⭐⭐</div>
-          </div>
-        </div>
-        <div class="rec-civ-reason">
-          <strong>推荐理由：</strong>102→502→505直城流程极其简单，<strong>铁浮屠</strong>是游戏最强重骑兵之一。流程固定容易记忆，适合想体验"一波推平"快感的玩家。
-        </div>
-      </div>
-
-      <div class="highlight-box tip" style="margin-top:20px;">
-        <strong>💡 新手建议：</strong>先从英格兰或法兰西开始，熟悉资源采集、时代升级、军事生产的基本循环。掌握后再尝试蒙古（机动）、德里（宗教）等高难度文明。多看小地图、勤用编队、保持农民不停产是胜利的三大基石！
-      </div>
+    <div style="margin-top: 16px; padding: 12px; background: rgba(74,222,128,0.05); border: 1px solid rgba(74,222,128,0.2); border-radius: 8px;">
+      <p style="font-size: 0.85rem; color: var(--accent-green);"><strong>💡 学习路线建议：</strong>英格兰（学经济）→ 法兰西（学军事）→ 马其顿（学地标）→ 中国（学多线）→ 进阶挑战高难度文明</p>
     </div>
   </div>
 </div>
 
 <script>
-// ============ DATA ============
+// ===== DATA =====
 const civilizations = [
   // ===== 用户提供的文明 =====
   {
-    id: "macedon", name: "马其顿王朝", icon: "🛡️", difficulty: 2,
-    provided: true,
-    guide: [
-      { era: "黑暗时代", icon: "🌑", content: `<p>开局<strong>6农吃肉</strong>，补2农采金。</p><p>第一个采金农民建造<strong>采矿场</strong>，第二个建造<strong>瓦兰吉军营</strong>。</p><p>补完采金后补2农吃肉，此时 <strong>8肉 2金</strong>。</p><p>补伐木农民（木区建造伐木场）。</p><p>攒够封建资源，<strong>3农拍下二本地标大酒庄</strong>。</p><p>有100木时金矿区建造<strong>哨塔</strong>。</p>` },
-      { era: "封建时代", icon: "⚔️", content: `<p>转移6个伐木农民建造<strong>瓦兰吉兵工厂</strong>（铁匠铺），然后去采金，此时<strong>8农采金</strong>。</p><p>黄金富余可点下：特制矿锄（采矿场）、独轮推车（大酒庄）、双阔斧（伐木场）、园艺学（大酒庄）。</p><p>城镇中心集结点补吃肉，补到<strong>12农吃肉</strong>后继续补伐木。</p><p>羊吃完木头多可种两块田。</p><div class="highlight-box tip"><strong>提示：</strong>白银充足可点下骑兵护甲血量科技。</div><p>满足城堡时代资源条件，拉伐木农民建造<strong>金角塔</strong>（拍在资源点附近）。</p><p>采金农民补下<strong>2个马厩</strong>。</p>` },
-      { era: "城堡时代", icon: "🏰", content: `<p><strong>双马厩出瑞塔利</strong>，大酒庄出僧侣控圣物。</p>` }
-    ]
+    id: "macedon", name: "马其顿王朝", icon: "🛡️", color: "#c9a84c",
+    difficulty: 2, difficultyText: "★★☆☆☆",
+    tags: ["provided"], tagLabels: ["已提供教程"],
+    variant: null,
+    eras: {
+      "黑暗时代": "开局6农吃肉，补2农采金。\n第一个采金农民建造采矿场，第二个建造瓦兰吉军营。\n补完采金后补2农吃肉，此时8肉2金。\n补伐木农民（木区建造伐木场）。\n攒够封建资源，3农拍下二本地标大酒庄。\n有100木时金矿区建造哨塔。"
+    }
   },
   {
-    id: "china", name: "中国", icon: "🐉", difficulty: 2,
-    provided: true,
-    guide: [
-      { era: "黑暗时代", icon: "🌑", content: `<p>开局<strong>6农造磨坊吃羊</strong>，补2农采金（建造采矿场和房屋）。</p><p>城镇中心补5农吃肉，补到<strong>11农吃肉</strong>，开始补伐木。</p><p>5农建造二本地标<strong>翰林院</strong>，翰林院集结点设置到磨坊。</p>` },
-      { era: "封建时代", icon: "⚔️", content: `<p>翰林院生产<strong>朝廷命官</strong>，收税并监督磨坊（仔细观察有税就收，20s CD，收完监督）。</p><p>伐够50木后建造房屋补充人口，后续伐够50木后建造伐木场。</p><p>满足第二个封建时代地标资源后，<strong>2个采金农民建造烈日瓮城</strong>。</p><p>拖6个吃肉农民，提交肉后采石。</p><p>烈日瓮城建造完后采石。</p><p>满足<strong>400木 300石</strong>，建造<strong>第二个城镇中心</strong>。</p>` },
-      { era: "城堡时代", icon: "🏰", content: `<p>有图权就建造<strong>清真寺</strong>拿圣物，没图权就继续上帝王。</p><p>期间石头挖到了就造科技打折堡。</p><p>上帝王科技升满按<strong>突袭大象</strong>即可（黄金一般够，不够就建造市场卖肉）。</p>` }
-    ]
+    id: "china", name: "中国", icon: "🇨🇳", color: "#de2910",
+    difficulty: 3, difficultyText: "★★★☆☆",
+    tags: ["provided"], tagLabels: ["已提供教程"],
+    variant: null,
+    eras: {
+      "封建时代": "转移6个伐木农民建造瓦兰吉兵工厂（铁匠铺），然后去采金，此时8农采金。\n黄金富余可点下特制矿锄（采矿场）、独轮推车（大酒庄）、双阔斧（伐木场）、园艺学（大酒庄）。\n城镇中心集结点补吃肉，补到12农吃肉后继续补伐木。\n羊吃完木头多可种两块田。\n白银充足可点下骑兵护甲血量科技。\n满足城堡时代资源条件，拉伐木农民建造金角塔，拍在资源点附近。\n采金农民补下2个马厩。",
+      "城堡时代": "双马厩出瑞塔利，大酒庄出僧侣控圣物。\n开局6农造磨坊吃羊，补2农采金（建造采矿场和房屋）。\n城镇中心补5农吃肉，补到11农吃肉，开始补伐木。\n5农建造二本地标翰林院，翰林院集结点设置到磨坊。\n翰林院生产朝廷命官，收税并监督磨坊（仔细观察有税就收，20sCD，收完监督）。\n伐够50木后建造房屋补充人口，后续伐够50木后建造伐木场。\n满足第二个封建时代地标资源后，2个采金农民建造烈日瓮城。\n拖6个吃肉农民，提交肉后采石。\n烈日瓮城建造完后采石。\n满足400木300石，建造第二个城镇中心。"
+    }
   },
   {
-    id: "tughluk", name: "图格鲁克王朝", icon: "🏜️", difficulty: 3,
-    provided: true,
-    guide: [
-      { era: "黑暗时代", icon: "🌑", content: `<p>开局<strong>6农和大象去吃浆果</strong>。</p><p>补大象和4农去采矿，采够200转移去采石。</p><p>补大象和8农去伐木，期间攒够封建时代资源。</p><p>用<strong>3个吃肉农民建造胜利之塔</strong>。</p><p>补够8农伐木后补石头。</p>` },
-      { era: "封建时代", icon: "⚔️", content: `<p>在石矿附近建造<strong>2TC</strong>，大概补到2TC造好时补吃肉农民。</p><p>满足资源在木区补<strong>3TC</strong>。</p><p>吃完浆果的农民就近转移去采金。</p><p>3TC后挖够400石头，找石矿附近建造<strong>腾哥拉卡巴德堡垒</strong>。</p><p>选择农民加速总督并升级。</p><p>补到<strong>20个吃肉农民</strong>后补伐木农民。</p><div class="highlight-box tip"><strong>提示：</strong>木头多了种田即可。石头够了在开局规划房子的位置，下肉堡升2级。</div><p>大概30多个吃肉农民、35个左右伐木农民时就能满足进入城堡时代的资源。</p>` },
-      { era: "城堡时代", icon: "🏰", content: `<p>石头够了就造科技打折堡。</p><p>上帝王科技升满按突袭大象即可。</p>` }
-    ]
+    id: "tughlaq", name: "图格鲁克王朝", icon: "🕌", color: "#1b5e20",
+    difficulty: 3, difficultyText: "★★★☆☆",
+    tags: ["provided"], tagLabels: ["已提供教程"],
+    variant: "德里苏丹国",
+    eras: {
+      "黑暗时代": "开局6农和大象去吃浆果。\n补大象和4农去采矿，采够200转移去采石。\n补大象和8农去伐木，期间攒够封建时代资源。\n用3个吃肉农民建造胜利之塔。\n补够8农伐木后补石头。",
+      "封建时代": "在石矿附近建造2TC，大概补到2TC造好时补吃肉农民。\n满足资源在木区补3TC。\n吃完浆果的农民就近转移去采金。\n3TC后挖够400石头找石矿附近建造腾哥拉卡巴德堡垒。\n选择农民加速总督并升级。\n补到20个吃肉农民后补伐木农民。\n木头多了种田即可。\n石头够了在开局规划房子的位置，下肉堡，升2级。\n大概30多个吃肉农民、35个左右伐木农民时就能满足进入城堡时代的资源。",
+      "城堡时代": "有图权就建造清真寺拿圣物，没图权就继续上帝王。\n期间石头挖到了就造科技打折堡。\n上帝王科技升满按突袭大象即可（黄金一般够，不够就建造市场卖肉）。"
+    }
   },
   {
-    id: "france", name: "法兰西", icon: "🇫🇷", difficulty: 1,
-    provided: true,
-    guide: [
-      { era: "黑暗时代", icon: "🌑", content: `<p>开局<strong>6农吃羊</strong>，侦察兵绕家一圈牵羊，顺便找鹿。</p><p>找到后6农建造<strong>磨坊吃鹿</strong>。</p><p>补4农采金，建造采矿场和房屋。</p><p>建造磨坊后点下<strong>生存技术</strong>，黄金充足后点下<strong>独轮推车</strong>。</p><p>补4农吃羊，然后补3农砍树。</p><p>满足吃肉条件，用<strong>4个吃羊农民建造封建时代地标</strong>（骑兵学校或者商会）。</p>` },
-      { era: "封建时代（骑兵学校）", icon: "⚔️", content: `<p>若为<strong>骑兵学校</strong>（双马厩开）：</p><p>建造完地标的农民去伐木。</p><p>点采矿科技，骑兵学校生产<strong>皇家骑士</strong>。</p><p>补到<strong>8农采金</strong>。</p><p>满足150木资源，建造地标转移去伐木的农民建造<strong>第二个马厩</strong>，随后去吃肉。</p><p>双马厩大致调配为 <strong>14肉 8金</strong>。</p>` },
-      { era: "城堡时代", icon: "🏰", content: `<p>双马厩持续出皇家骑士压制。</p><p>皇家学院可研究所有独特科技。</p>` }
-    ]
+    id: "france", name: "法兰西", icon: "🇫🇷", color: "#0055a4",
+    difficulty: 1, difficultyText: "★☆☆☆☆",
+    tags: ["provided"], tagLabels: ["已提供教程"],
+    variant: null,
+    eras: {
+      "黑暗时代": "开局6农吃羊，侦察兵绕家一圈牵羊，顺便找鹿。\n找到后6农建造磨坊吃鹿。\n补4农采金，建造采矿场和房屋。\n建造磨坊后点下生存技术，黄金充足后点下独轮推车。\n补4农吃羊，然后补3农砍树。\n满足吃肉条件，用4个吃羊农民建造封建时代地标（骑兵学校或者商会）。",
+      "封建时代（骑兵学校流）": "建造完地标的农民去伐木。\n点采矿科技，骑兵学校生产皇家骑士。\n补到8农采金。\n满足150木资源，建造地标转移去伐木的农民建造第二个马厩。\n随后去吃肉。\n双马厩大致调配为14肉8金。",
+      "封建时代（圣殿/法兰西公国流）": "6农吃肉补2农采金。\n补6农伐木。\n黄金才够200转移去采石。\n上本资源足够点下法兰西公国。\n将开局6个吃肉农民转去采石，城镇中心集结点改成肉。\n调配为1肉6木0金8石。\n上本选址开TC即可。"
+    }
   },
   {
-    id: "mali", name: "马里", icon: "🌍", difficulty: 2,
-    provided: true,
-    guide: [
-      { era: "黑暗时代", icon: "🌑", content: `<p>开局<strong>5农伐木</strong>，1农建造<strong>露天矿区</strong>。</p><p>伐木农民 shift 依次点击木头→城镇中心→绵羊（砍完树提交后转移去吃羊）。</p><p>建造露天矿区的农民毗邻矿区建造<strong>6个房屋</strong>（6房开）。</p><p>侦察兵绕家一圈侦查并把绵羊塞到TC底下，随后去赶家附近的鹿。</p><p>城镇中心补农民吃肉直至<strong>10农吃肉</strong>，然后开始补伐木农民。</p><p>满足上本资源条件，<strong>3个吃羊农民毗邻木区建造二本地标撒哈拉贸易网络</strong>。</p>` },
-      { era: "封建时代", icon: "⚔️", content: `<p>留<strong>4个吃肉农民</strong>，其他全部提交资源后转移去砍树。</p><p>伐木农民木头充足建造伐木场去木区砍树。</p><p>补到<strong>8农伐木</strong>后，补5农建造采矿场采金。</p><p>拍好地标即可建造<strong>城镇中心</strong>，派遣3个建造地标的农民和5个伐木农民去鹿区建造城镇中心，随后吃鹿。</p><p>补到<strong>20农吃肉</strong>后补到7农伐木，最后补到<strong>15农采金</strong>。</p><p>黄金多了记得点采集科技：特制矿锄、双阔斧、园艺学。</p><p>木头多了建造磨坊（点科技和预备出牛）、兵营。</p><p>满足资源建造三本地标<strong>死士驻军</strong>。</p>` },
-      { era: "城堡时代", icon: "🏰", content: `<p>点出<strong>曼萨穆索法迪战士</strong>开始出兵。</p><p>兵量足够，农民建造第二个、第三个露天矿区。</p><p>城镇中心补伐木，木头多了下铁匠铺（军事科技）、修道院（捡圣物）。</p><p>露天矿区补完黄金会多，可以多下个磨坊开始转型<strong>养牛经济</strong>。</p>` }
-    ]
+    id: "mali", name: "马里", icon: "🌍", color: "#c9a84c",
+    difficulty: 2, difficultyText: "★★☆☆☆",
+    tags: ["provided"], tagLabels: ["已提供教程"],
+    variant: null,
+    eras: {
+      "黑暗时代": "开局5农伐木，1农建造露天矿区。\n伐木农民shift依次点击木头、城镇中心、绵羊（让农民砍完树提交完后转移去吃羊）。\n建造露天矿区的农民毗邻矿区建造6个房屋（俗称6房开）。\n侦察兵绕家一圈侦查并把绵羊塞到TC底下，随后去赶一下家附近的鹿。\n城镇中心补农民吃肉直至10农吃肉，然后开始补伐木农民。\n满足上本资源条件，3吃羊农民毗邻木区建造二本地标撒哈拉贸易网络。",
+      "封建时代": "留4个吃肉农民，其他全部提交资源后转移去砍树。\n伐木农民木头充足建造伐木场去木区砍树。\n补到8农伐木后，补5农建造采矿场采金。\n拍好地标即可建造城镇中心，派遣3个建造地标的农民和5个伐木农民去鹿区建造城镇中心，随后吃鹿。\n补到20农吃肉后补到7农伐木，最后补到15农采金。\n黄金多了记得点采集科技：特制矿锄、双阔斧、园艺学。\n木头多了建造磨坊（点科技和预备出牛）、兵营。\n满足资源建造三本地标死士驻军。",
+      "城堡时代": "点出曼萨穆索法迪战士，开始出兵。\n兵量足够农民建造第二个、第三个露天矿区。\n城镇中心补伐木，木头多了下铁匠铺（军事科技）、修道院（捡圣物）。\n露天矿区补完黄金会多，可以多下个磨坊开始转型养牛经济。"
+    }
   },
   {
-    id: "sengoku", name: "战国大名", icon: "⛩️", difficulty: 3,
-    provided: true,
-    guide: [
-      { era: "黑暗时代", icon: "🌑", content: `<p>开局<strong>6农贴木区建造祭典伐木</strong>。</p><p>城镇中心集结点设置到羊，补<strong>4农吃肉</strong>。</p><p>木头足够先出<strong>屋台</strong>（屋台集结点设置到野猪），再补房屋。</p><p>点下<strong>编织袋</strong>（一级手推车），期间有木头就补屋台。</p><p>补到4农吃肉后，补2农伐木，然后继续补吃肉。</p><p>出第三个屋台，集结点设置到家附近的鹿区。</p><p>第三个屋台出完后，调配<strong>5个伐木农民建造采矿场采金</strong>。</p><p>等待资源足够上本，建造<strong>日式旅馆</strong>（造在城镇中心另一侧）。</p><p>建造地标的同时用5个采金农民建造<strong>哨塔</strong>保护金矿。</p>` },
-      { era: "封建时代", icon: "⚔️", content: `<p>建造完日式旅馆的农，调配<strong>5农采金、3农吃肉</strong>。</p><p>点下<strong>竹细工</strong>（二级手推车）和特制矿锄。</p><p>城镇中心补到<strong>14农吃肉</strong>（注意14农包括屋台，满效率屋台≈1.5农，自行计算）。</p><p>后续补伐木，等待资源上本（期间可以建造大名府邸出大名）。</p><p>攒够资源后，拉5个采金农民贴TC拍下<strong>清酒厂</strong>（建造在祭典范围内）。</p><p>再补上5个吃肉农民建造，并用 shift 连续指令让这5个造完回去吃肉。</p><p>建造大名府邸和<strong>2个马厩</strong>，准备生产<strong>骑马武士</strong>。</p><p>铁匠铺可以点1级近攻和1级远防。</p>` },
-      { era: "城堡时代", icon: "🏰", content: `<p><strong>双马厩生产骑马武士</strong>。</p><p>城镇中心依旧补木头不变。</p><p>每补1个马厩，分配伐木农民5个采金、6个吃肉。</p><p>上城初期最多<strong>3马厩开爆</strong>，后续防守多线。</p>` }
-    ]
+    id: "sengoku", name: "战国大名", icon: "⛩️", color: "#8b0000",
+    difficulty: 3, difficultyText: "★★★☆☆",
+    tags: ["provided"], tagLabels: ["已提供教程"],
+    variant: "日本",
+    eras: {
+      "黑暗时代": "开局6农贴木区建造祭典伐木。\n城镇中心集结点设置到羊，补4农吃肉。\n木头足够先出屋台（屋台集结点设置到野猪），再补房屋。\n点下编织袋（一级手推车），期间有木头就补屋台。\n补到4农吃肉后，补2农伐木，然后继续补吃肉。\n出第三个屋台，集结点设置到家附近的鹿区。\n第三个屋台出完后，调配5个伐木农民建造采矿场采金。\n等待资源足够上本，建造日式旅馆，造在城镇中心的另一侧。\n建造地标的同时用5个采金农民建造哨塔，保护金矿。",
+      "封建时代": "建造完日式旅馆的农，调配5农采金，3农吃肉。\n点下竹细工（二级手推车）和特制矿锄。\n城镇中心补到14农吃肉（注意这个14农包括屋台，满效率屋台大概为1.5农，自行计算）。\n后续补伐木，等待资源上本（期间可以建造大名府邸出大名）。\n攒够资源后，拉5个采金农民贴TC拍下清酒厂，建造在祭典范围内。\n再补上5个吃肉农民建造，并用shift连续指令让这五个造完回去吃肉。\n建造大名府邸和2个马厩，准备生产骑马武士。\n——这时铁匠铺可以点1级近攻和1级远防。",
+      "城堡时代": "双马厩生产骑马武士。\n城镇中心依旧补木头不变。\n每补1个马厩，分配伐木农民5个采金，6个吃肉。\n上城初期最多3马厩开爆，后续防守多线。"
+    }
   },
   {
-    id: "jin", name: "金朝", icon: "🐎", difficulty: 2,
-    provided: true,
-    guide: [
-      { era: "黑暗时代", icon: "🌑", content: `<p>开局<strong>1农吃鹿</strong>（城镇中心底下的），<strong>2农建造采矿场采金</strong>。</p><p>侦察兵牵羊，绕家周围找鹿。</p><p>找到鹿后后续补<strong>4个骑马农民吃野鹿</strong>，并点下吃鹿科技。</p><p>家里开局吃鹿的农民砍50木头建造房屋，随后建造二本地标<strong>大牧场</strong>。</p>` },
-      { era: "封建时代", icon: "⚔️", content: `<p>城镇中心继续生产骑马农民，补充采集黄金农民到<strong>5个</strong>。</p><p>随后新出的农民补充建造地标。</p><p>进入封建时代，如果没被干扰此时已有城堡时代资源。</p>` },
-      { era: "城堡时代", icon: "🏰", content: `<p>建造三本地标<strong>山门殿</strong>抵达城堡时代。</p><p>大牧场升级<strong>老练铁浮屠</strong>，打折瞬间生产铁浮屠。</p><p>山门殿生产<strong>僧侣捡圣物</strong>，城镇中心可选生产使者。</p>` }
-    ]
+    id: "jin", name: "金朝", icon: "🏹", color: "#8b4513",
+    difficulty: 2, difficultyText: "★★☆☆☆",
+    tags: ["provided"], tagLabels: ["已提供教程"],
+    variant: "中国",
+    eras: {
+      "直3流程（最简单）": "【102转502转505直城】\n开局1农吃鹿（城镇中心底下的），2农建造采矿场采金。\n侦察兵牵羊，绕家周围找鹿。\n找到鹿后后续补4个骑马农民吃野鹿，并点下吃鹿科技。\n家里开局吃鹿的农民砍50木头建造房屋，随后建造二本地标大牧场。\n城镇中心继续生产骑马农民，补充采集黄金农民到5个。\n随后新出的农民补充建造地标。\n进入封建时代，如果没被干扰此时已有城堡时代资源。\n建造三本地标山门殿，抵达城堡时代。\n大牧场升级老练铁浮屠，打折瞬间生产铁浮屠。\n山门殿生产僧侣捡圣物，城镇中心可选生产使者。",
+      "2TC流程": "开局1马农吃鹿，2马农建造采矿场采金。\n补到3马农吃鹿。\n补2马农采石头，建造采矿场和房屋。\n补马农伐散木。\n满足资源上本，1采金马农建造二本地标。\n将3个吃肉马农调整2个去伐散木。\n城镇中心继续补伐散木农民。\n抵达封建时代，贴着金矿建造第二个城镇中心即可。"
+    }
   },
   {
-    id: "lancaster", name: "兰开斯特", icon: "🏰", difficulty: 1,
-    provided: true,
-    guide: [
-      { era: "黑暗时代", icon: "🌑", content: `<p>开局<strong>6肉 3金</strong>转9肉3金上本。</p><p>用<strong>2金农拍兰开斯特城堡</strong>，1金农补伐木场。</p><p><strong>4个吃肉农民拍采矿场采石</strong>，留3农吃肉，剩下补伐木。</p>` },
-      { era: "封建时代", icon: "⚔️", content: `<p>开TC后期经济太好自己调。</p><p>卷2流程依旧<strong>3金农拍列王修道院</strong>，3吃肉农转采石，剩下补伐木。</p><p>上本资源足够点下<strong>法兰西公国</strong>。</p><p>将开局6个吃肉农民转去采石，城镇中心集结点改成肉。</p><p>调配为 <strong>1肉 6木 0金 8石</strong>。</p><p>上本选址开TC即可。</p>` },
-      { era: "城堡时代", icon: "🏰", content: `<p>利用城堡防御优势，经济滚雪球后转军事压制。</p>` }
-    ]
+    id: "lancaster", name: "兰开斯特", icon: "🌹", color: "#800020",
+    difficulty: 1, difficultyText: "★☆☆☆☆",
+    tags: ["provided"], tagLabels: ["已提供教程"],
+    variant: "英格兰",
+    eras: {
+      "黑暗时代": "开局依旧6肉3金转9肉3金上本。\n开TC流程用2金农拍兰开斯特城堡，1金农补伐木场。\n4个吃肉农民拍采矿场采石，留3农吃肉，剩下补伐木。\n开TC后期经济太好自己调，余一堆钱。"
+    }
   },
   {
-    id: "golden_horde", name: "金帐汗国", icon: "🏕️", difficulty: 3,
-    provided: true,
-    guide: [
-      { era: "黑暗时代", icon: "🌑", content: `<p>开局<strong>5农吃羊</strong>，拉1农去造<strong>敖包和金帐</strong>。</p><p>补一组农民建造采矿场采金。</p><p>随后集结点补肉。</p><p>攒够上本资源点下<strong>建筑车</strong>。</p>` },
-      { era: "封建时代", icon: "⚔️", content: `<p>转移<strong>8个吃肉农民散木</strong>随后建造伐木场伐木。</p><p>然后在有150木头时候，转移<strong>4个吃肉农民去采金</strong>并且建造上设防哨站。</p><p>城镇中心依旧补肉。</p><p>安全情况下补敖包，点下独轮推车和采矿科技（后续可以点伐木科技）。</p><p>马厩生产一组<strong>怯薛骑兵</strong>去骚扰（干扰资源为主，不要换农，也可以拦截直城文明捡圣物）。</p><p>木头多了就种牲畜围栏，也可拍铁匠铺点科技。</p><p>攒够资源点下<strong>莫斯科贡赋</strong>即可。</p><p>补到<strong>19农吃肉</strong>后，补到<strong>15农采金</strong>。</p><p>补2个马厩。</p>` },
-      { era: "城堡时代", icon: "🏰", content: `<p>点下马厩援军并开始生产<strong>怯薛骑兵</strong>。</p><p>建筑车可选择变成<strong>修道院</strong>出僧侣夺取圣物。</p><p>补到15黄金之后补木头，后续多的木头转田拍哨站即可。</p>` }
-    ]
+    id: "goldenhorde", name: "金帐汗国", icon: "🏕️", color: "#006400",
+    difficulty: 3, difficultyText: "★★★☆☆",
+    tags: ["provided"], tagLabels: ["已提供教程"],
+    variant: "蒙古",
+    eras: {
+      "黑暗时代": "开局5农吃羊，拉1农去造敖包和金帐。\n补一组农民建造采矿场采金。\n随后集结点补肉。\n攒够上本资源点下建筑车。\n转移8个吃肉农民散木随后建造伐木场伐木。\n然后在有150木头时候，转移4个吃肉农民去采金，并且建造上设防哨站。\n城镇中心依旧补肉。",
+      "封建时代": "安全情况下补敖包，点下独轮推车和采矿科技（后续可以点伐木科技）。\n马厩生产一组怯薛骑兵去骚扰（干扰资源为主，不要换农，也可以拦截直城文明捡圣物）。\n木头多了就种牲畜围栏，也可拍铁匠铺点科技。\n攒够资源点下莫斯科贡赋即可。\n补到19农吃肉后，补到15农采金。\n补2个马厩。",
+      "城堡时代": "点下马厩援军并开始生产怯薛骑兵。\n建筑车可选择变成修道院出僧侣夺取圣物。\n补到15黄金之后补木头，后续多的木头转田拍哨站即可。"
+    }
   },
 
-  // ===== 补充的文明 =====
+  // ===== 补充教程的文明 =====
   {
-    id: "rus", name: "罗斯", icon: "🐻", difficulty: 2,
-    provided: false,
-    guide: [
-      { era: "黑暗时代", icon: "🌑", content: `<p>开局<strong>5农伐木</strong>，1农贴木区造<strong>狩猎小屋</strong>（约15-17黄金/分钟）和1个房屋。</p><p>城镇中心生产1个农民造<strong>第二个狩猎小屋</strong>。</p><p>开局5农伐木 shift 连续指令到城镇中心→羊（伐完木交回TC然后吃羊）。</p><p>此时手里会有<strong>150木</strong>，分别留着造第二个房屋、伐木场、采矿场。</p>` },
-      { era: "封建时代", icon: "⚔️", content: `<p>满足资源条件进入封建时代。</p><p>拉<strong>4个吃肉农民建造采矿场挖石头</strong>。</p><p>留<strong>4个吃肉农民</strong>，剩下的吃肉农民建造地标<strong>克里姆林</strong>（选址参考视频）。</p><p>城镇中心集结点设置到木区，新出的农民建造房屋和伐木场，后续去伐木。</p><p>狩猎小屋点下<strong>独轮推车</strong>科技。</p>` },
-      { era: "城堡时代", icon: "🏰", content: `<p>满足<strong>400木 300石</strong>选址建造<strong>第二个城镇中心</strong>。</p><p>双TC持续补农民，经济滚雪球后转军事。</p>` }
+    id: "rus", name: "罗斯", icon: "🐻", color: "#1a5276",
+    difficulty: 2, difficultyText: "★★☆☆☆",
+    tags: ["provided"], tagLabels: ["已提供教程"],
+    variant: null,
+    eras: {
+      "黑暗时代": "开局5农伐木，1农贴木区造狩猎小屋（大概15-17的每分钟黄金）和一个房屋（增加人口上限）。\n城镇中心生产1个农民造第二个狩猎小屋。\n开局5农伐木shift连续指令到城镇中心→羊（农民伐完木会交回到城镇中心然后吃羊）。\n此时手里会有150木，分别留着造第二个房屋、伐木场、采矿场。\n满足资源条件进入封建时代。",
+      "封建时代": "拉4个吃肉农民建造采矿场挖石头。\n留4个吃肉农民，剩下的吃肉农民建造地标克里姆林，选址可参考视频内。\n城镇中心集结点设置到木区，新出的农民建造房屋和伐木场，后续去伐木。\n满足400木300石，选址建造第二个城镇中心。\n狩猎小屋点下独轮推车科技。"
+    }
+  },
+  {
+    id: "hre", name: "神圣罗马帝国", icon: "⚜️", color: "#4a0e0e",
+    difficulty: 3, difficultyText: "★★★☆☆",
+    tags: ["provided"], tagLabels: ["已提供教程"],
+    variant: null,
+    eras: {
+      "黑暗时代": "开局3农吃肉，3农采金。\n采金的3农2个拍采矿场，1个拍房屋。\n随后TC补肉直到攒够上本资源。\n攒够上本资源拍亚琛教堂。\n保留3农吃肉的情况下，分配5农和高级教士去采集石头，其他所有农民去拍亚琛教堂（包括新出的农民）。\n选址在木区旁（非常重要！必须是木区）。",
+      "封建时代": "采集石头的农民采够350后，建造房屋，随后也拖去伐木。\n城镇中心集结点临时设置在木区，尽快采集够2TC的资源。\n随后转移8个农民在金矿旁拍下2TC。\n拍完TC后2个TC集结点设置在肉区。\n有木头就慢慢种田直至上本。\n此时调配为：若干农吃肉、7农伐木、8农采金。\n10分钟左右，拉10个吃肉农民建造城主宫殿。\n可在果子区拍下磨坊点手推车以及经济科技。\n副TC可出一个高级教士鼓舞金矿农民。\n亚琛伐木区域记得补伐木场点经济科技。",
+      "城堡时代": "30个种田农民即可保证大兵营不停产出。\n后续农民调配按需要的补。\n例如食物不够吃需要迅速转够30个农田就补木头。\n需要控图或是防守就补石头。\n需要出别的兵种就转相应调配。\n如果想出兵出的更快，可选择点铁匠铺的军事学院科技，大兵营武士会从5s一个变成3s一个。\n但同时也需要二级园艺学才能保证持续产出。",
+      "帝王时代": "可选拍下防御地标保护田区。\n转团队有需要的兵即可。\n由于田转好了食物较多可优先考虑高肉兵种，例如骑手、骑士、火枪等。"
+    }
+  },
+  {
+    id: "byzantine", name: "拜占庭", icon: "🦅", color: "#5b2c6f",
+    difficulty: 3, difficultyText: "★★★☆☆",
+    tags: ["provided"], tagLabels: ["已提供教程"],
+    variant: null,
+    eras: {
+      "黑暗时代": "开局5农吃羊，1农建造采矿场+房屋采石。\n补2农吃羊，3农采金（下采矿场）。\n随后补木头。\n满足上本的资源，用3个采金农民贴果子拍下大酒庄。\n将采石农民补充到3个。\n留3农吃肉，其余伐木。",
+      "封建时代": "上本TC盖在金矿附近。\n留6农采金。\n1TC补肉，1TC补木。\n不停种田，补水池，点采集科技。\n直到12分钟左右拍下金角塔。\n3兵营2雇佣兵之家开爆。\n（视情况可以将兵营改为马厩出骑手）"
+    }
+  },
+  {
+    id: "abbasid", name: "阿拔斯", icon: "📚", color: "#2e7d32",
+    difficulty: 2, difficultyText: "★★☆☆☆",
+    tags: ["provided"], tagLabels: ["已提供教程"],
+    variant: null,
+    eras: {
+      "黑暗时代": "开局6农建造磨坊吃果子。\n补2农采金（第一个农民下采矿场，第二个农民补房子）。\n补2农吃羊/吃果（离石料近的吃肉位置）。\n802后集结点设置到散木。\n第一个出来的农敲智慧宫，随后砍树。\n智慧宫建造完毕选择经济偏殿进入封建时代。\n采够50木后，拉4个吃肉农民去下采矿场采集石料。\n再次采够50木后拉散木农民去树林边上建造伐木场伐木。",
+      "封建时代": "智慧宫点下新月沃土。\n采金农民采够新鲜食品的黄金后，磨坊点下新鲜食品。\n随后转移采金农民去采石。\n此时4肉9木0金6石。\n第一个城镇中心下在石料附近。\n后根据实战情况自行调整。"
+    }
+  },
+  {
+    id: "japan", name: "日本", icon: "🗾", color: "#c62828",
+    difficulty: 2, difficultyText: "★★☆☆☆",
+    tags: ["provided"], tagLabels: ["已提供教程"],
+    variant: null,
+    eras: {
+      "黑暗时代": "开局6农吃羊，补1农去果区造房子。\n造好后研究塔瓦拉科技，提升农民运载量和浆果采集速率。\n随后补4农采集黄金。\n704开局。\n随后补4个农民采集木头。\n期间会攒够上封建时代的资源。\n使用3个吃羊的农民建造二本地标藏造仓库。\n仓库贴木区摆放，放在主TC射程内。\n补充至4农伐木后，补1农去金矿造哨塔随后采金。\n哨塔能保护金矿农民不受早期骑士的骚扰，对于直城文明至关重要。\n随后一直补农民吃肉。\n日本的房屋能当存放食物的磨坊使用，所以可以提前规划好位置方便后续种田。",
+      "封建时代": "3个造好地标的农民，1个去种田，2个去木区伐木。\n房屋和采矿场点上竹细工和特制矿锄科技。\n开局分配的4个伐木农民砍完第二根散木，也全部分配去吃羊。\n注意竹细工研究完毕后，日本农民有+50%的浆果采集效率。\n所以在安全的情况下，可以分配农民优先吃果子。\n期间藏造仓库刷田就种田，其余都去吃果子。\n大约7:30之前，攒够上三本的资源。\n调配9个吃果子的农民建造水上鸟居和马厩，准备生产骑马武士。\n水上鸟居一定要贴着主TC建造（至关重要），这样能防止被抓上城timing点。\n城镇中心可点下大名府邸升级，提升防御能力、旗人建造上限以及农田采集效率。\n可以生产骑马旗本武士和点下一级远防。",
+      "城堡时代": "水上鸟居会立刻生产一位拿着依代的神道教教主。\n将第一个依代放置在马厩中加速生产骑马武士，随后出门夺取圣物（木头富余时补修道院存放）。\n资源采集方面，将吃肉农民调整至16人，采金农民调整至10人，后续TC全力补伐木。\n骑马武士不停前去骚扰。\n等石头够自动补TC，第二、第三个依代都塞TC加速出农民。\n补田随后补兵营大量出步兵（QWER），或是控图挖外矿补马厩不停出骑马武士（调配大概为40肉若干金）。"
+    }
+  },
+  {
+    id: "england", name: "英格兰", icon: "🏴󠁧󠁢󠁥󠁮󠁧󠁿", color: "#c8102e",
+    difficulty: 1, difficultyText: "★☆☆☆☆",
+    tags: ["provided"], tagLabels: ["已提供教程"],
+    variant: null,
+    eras: {
+      "黑暗时代": "开局6农吃肉，补2农采金。\n后续补3农吃肉，1农采金。\n9肉0木3金后，城镇中心集结点设置到木区并建造伐木场，后续无需变动。\n攒够上本资源，用3个吃肉农民建造二本地标议会厅。\n1个吃肉农民就近建造磨坊（可以建造在浆果丛附近）。\n攒够资源点下磨坊中的独轮推车科技。\n随后进入封建时代。",
+      "封建时代": "议会厅生产长弓兵，初期议会厅生产速度过快不能满效率运行。\n此时有多余的资源点下伐木场中的双阔斧科技。\n9肉11木即可满效率生产长弓兵。\n后续补多余的木头可以下铁匠铺点科技，也可停长弓提早下铁匠铺点科技。"
+    }
+  },
+
+  // ===== 网上教程的文明 =====
+  {
+    id: "mongol", name: "蒙古", icon: "🏇", color: "#006400",
+    difficulty: 3, difficultyText: "★★★☆☆",
+    tags: ["online"], tagLabels: ["网上教程"],
+    variant: null,
+    overview: "蒙古是游牧文明，不使用城镇中心，而是依靠移动式帐篷（敖包）作为经济核心。擅长快速扩张和机动战，骑兵体系强大但经济脆弱。",
+    links: [
+      { label: "AoE4 World 蒙古页面", url: "https://aoe4world.com/explorer/civilizations/mongols" },
+      { label: "B站蒙古教程", url: "https://search.bilibili.com/all?keyword=帝国时代4蒙古教程" },
+      { label: "YouTube 蒙古攻略", url: "https://www.youtube.com/results?search_query=aoe4+mongols+guide" }
     ]
   },
   {
-    id: "hre", name: "神圣罗马帝国", icon: "⛪", difficulty: 3,
-    provided: false,
-    guide: [
-      { era: "黑暗时代", icon: "🌑", content: `<p>开局<strong>3农吃肉、3农采金</strong>。</p><p>采金的3农中2个拍采矿场，1个拍房屋。</p><p>随后TC补肉直到攒够上本资源。</p><p>攒够上本资源拍<strong>亚琛教堂</strong>。</p>` },
-      { era: "封建时代", icon: "⚔️", content: `<p>保留<strong>3农吃肉</strong>的情况下，分配<strong>5农和高级教士去采集石头</strong>。</p><p>其他所有农民去拍亚琛教堂（包括新出的农民），选址在<strong>木区旁</strong>（非常重要！必须是木区）。</p><p>采集石头的农民采够350后，建造房屋，随后也拖去伐木。</p><p>城镇中心集结点临时设置在木区，尽快采集够<strong>2TC的资源</strong>。</p><p>随后转移<strong>8个农民在金矿旁拍下2TC</strong>。</p><p>拍完TC后2个TC集结点设置在肉区。</p><p>有木头就慢慢种田直至上本。</p><p>调配为：若干农吃肉、<strong>7农伐木、8农采金</strong>。</p><p><strong>10分钟左右</strong>，拉10个吃肉农民建造<strong>城主宫殿</strong>。</p><div class="highlight-box tip"><strong>提示：</strong>可在果子区拍下磨坊点手推车及经济科技。副TC可出一个高级教士鼓舞金矿农民。亚琛伐木区域记得补伐木场点经济科技。</div>` },
-      { era: "城堡时代", icon: "🏰", content: `<p><strong>30个种田农民</strong>即可保证大兵营不停产出。</p><p>后续农民调配按需要补：食物不够就迅速转30农田补木头，需要控图/防守就补石头。</p><p>想出兵更快可点铁匠铺的军事学院科技，大兵营武士从5s一个变3s一个（同时需要二级园艺学保证持续产出）。</p>` },
-      { era: "帝王时代", icon: "👑", content: `<p>可选拍下<strong>防御地标保护田区</strong>。</p><p>转团队需要的兵即可。田转好了食物多可优先考虑高肉兵种：骑手、骑士、火枪等。</p>` }
+    id: "delhi", name: "德里苏丹国", icon: "🕌", color: "#1b5e20",
+    difficulty: 3, difficultyText: "★★★☆☆",
+    tags: ["online"], tagLabels: ["网上教程"],
+    variant: null,
+    overview: "德里苏丹国拥有独特的科技免费研究机制（需派学者监督），经济节奏特殊。兵种全面，骆驼骑兵和战象是特色单位。",
+    links: [
+      { label: "AoE4 World 德里页面", url: "https://aoe4world.com/explorer/civilizations/delhi-sultanate" },
+      { label: "B站德里教程", url: "https://search.bilibili.com/all?keyword=帝国时代4德里苏丹国教程" },
+      { label: "YouTube 德里攻略", url: "https://www.youtube.com/results?search_query=aoe4+delhi+sultanate+guide" }
     ]
   },
   {
-    id: "byzantine", name: "拜占庭", icon: "🦅", difficulty: 3,
-    provided: false,
-    guide: [
-      { era: "黑暗时代", icon: "🌑", content: `<p>开局<strong>5农吃羊</strong>，1农建造采矿场+房屋采石。</p><p>补<strong>2农吃羊、3农采金</strong>（下采矿场）。</p><p>随后补木头。</p>` },
-      { era: "封建时代", icon: "⚔️", content: `<p>满足上本资源，用<strong>3个采金农民贴果子拍下大酒庄</strong>。</p><p>将采石农民补充到3个。</p><p>留<strong>3农吃肉</strong>，其余伐木。</p><p>上本TC盖在<strong>金矿附近</strong>。</p><p>留<strong>6农采金</strong>，1TC补肉，1TC补木。</p><p>不停种田、补水池、点采集科技。</p>` },
-      { era: "城堡时代", icon: "🏰", content: `<p>直到<strong>12分钟左右拍下金角塔</strong>。</p><p><strong>3兵营 2雇佣兵之家开爆</strong>。</p><p>视情况可以将兵营改为马厩出骑手。</p>` }
+    id: "ottoman", name: "奥斯曼", icon: "☪️", color: "#800000",
+    difficulty: 2, difficultyText: "★★☆☆☆",
+    tags: ["online"], tagLabels: ["网上教程"],
+    variant: null,
+    overview: "奥斯曼拥有独特的维齐尔系统（技能树），经济稳健。火炮和火枪兵是后期核心，重型火炮能摧毁一切防御。",
+    links: [
+      { label: "AoE4 World 奥斯曼页面", url: "https://aoe4world.com/explorer/civilizations/ottomans" },
+      { label: "B站奥斯曼教程", url: "https://search.bilibili.com/all?keyword=帝国时代4奥斯曼教程" },
+      { label: "YouTube 奥斯曼攻略", url: "https://www.youtube.com/results?search_query=aoe4+ottoman+guide" }
     ]
   },
   {
-    id: "abbasid", name: "阿拔斯", icon: "🕌", difficulty: 3,
-    provided: false,
-    guide: [
-      { era: "黑暗时代", icon: "🌑", content: `<p>开局<strong>6农建造磨坊吃果子</strong>。</p><p>补<strong>2农采金</strong>（第一个农民下采矿场，第二个农民补房子）。</p><p>补2农吃羊/吃果（离石料近的吃肉位置）。</p><p><strong>802后</strong>集结点设置到散木。</p><p>第一个出来的农敲<strong>智慧宫</strong>，随后砍树。</p>` },
-      { era: "封建时代", icon: "⚔️", content: `<p>智慧宫建造完毕选择<strong>经济偏殿</strong>进入封建时代。</p><p>采够50木后，拉<strong>4个吃肉农民去下采矿场采集石料</strong>。</p><p>再次采够50木后拉散木农民去树林边上建造伐木场伐木。</p><p>智慧宫点下<strong>新月沃土</strong>。</p><p>采金农民采够新鲜食品的黄金后，磨坊点下<strong>新鲜食品</strong>，随后转移采金农民去采石。</p><p>此时调配：<strong>4肉 9木 0金 6石</strong>。</p><p>第一个城镇中心下在<strong>石料附近</strong>，后根据实战情况自行调整。</p>` },
-      { era: "城堡时代", icon: "🏰", content: `<p>继续扩建经济，智慧宫选择军事或贸易偏殿。</p><p>骆驼骑兵体系是核心军事力量。</p>` }
+    id: "ayyubid", name: "阿尤布", icon: "🦁", color: "#b8860b",
+    difficulty: 2, difficultyText: "★★☆☆☆",
+    tags: ["online"], tagLabels: ["网上教程"],
+    variant: "阿拔斯王朝",
+    overview: "阿尤布王朝是阿拔斯王朝的变体文明，以萨拉丁为原型。拥有独特的派系系统，可在军事/经济/宗教路线间切换，灵活性极高。",
+    links: [
+      { label: "AoE4 World 阿尤布页面", url: "https://aoe4world.com/explorer/civilizations/ayyubids" },
+      { label: "B站阿尤布教程", url: "https://search.bilibili.com/all?keyword=帝国时代4阿尤布教程" },
+      { label: "YouTube 阿尤布攻略", url: "https://www.youtube.com/results?search_query=aoe4+ayyubids+guide" }
     ]
   },
   {
-    id: "japan", name: "日本", icon: "🗾", difficulty: 3,
-    provided: false,
-    guide: [
-      { era: "黑暗时代", icon: "🌑", content: `<p>开局<strong>6农吃羊</strong>，补1农去果区造房子。</p><p>造好后研究<strong>塔瓦拉科技</strong>（提升农民运载量和浆果采集速率）。</p><p>随后补<strong>4农采集黄金</strong>（704开局）。</p><p>随后补<strong>4个农民采集木头</strong>。</p>` },
-      { era: "封建时代", icon: "⚔️", content: `<p>期间攒够上封建时代的资源，使用<strong>3个吃羊的农民建造二本地标藏造仓库</strong>。</p><p>仓库贴木区摆放，放在主TC射程内。</p><p>补充至<strong>4农伐木</strong>后，补1农去金矿造哨塔随后采金。</p><p>哨塔能保护金矿农民不受早期骑士骚扰，对于直城文明至关重要。</p><p>日本的房屋能当存放食物的磨坊使用，可以提前规划好位置方便后续种田。</p><p>3个造好地标的农民：1个去种田，2个去木区伐木。</p><p>房屋和采矿场点上<strong>竹细工和特制矿锄</strong>科技。</p><p>开局分配的4个伐木农民砍完第二根散木也全部分配去吃羊。</p><div class="highlight-box tip"><strong>提示：</strong>竹细工研究完毕后日本农民有+50%浆果采集效率，安全情况下优先吃果子。</div><p>藏造仓库刷田就种田，其余都去吃果子。</p>` },
-      { era: "城堡时代", icon: "🏰", content: `<p>大约<strong>7:30之前</strong>攒够上三本资源，调配<strong>9个吃果子的农民建造水上鸟居和马厩</strong>。</p><p>水上鸟居一定要<strong>贴着主TC建造</strong>（至关重要），防止被抓上城timing。</p><p>城镇中心点下<strong>大名府邸升级</strong>（提升防御、旗人上限、农田效率）。</p><p>水上鸟居立即生产神道教教主，第一个依代放马厩加速生产<strong>骑马武士</strong>。</p><p>资源调配：<strong>16吃肉、10采金</strong>，后续TC全力补伐木。</p><p>骑马武士不停前去骚扰，石头够自动补TC。</p><p>第二、第三个依代都塞TC加速出农民补田/补兵营出步兵。</p>` }
+    id: "jeanne", name: "圣女贞德", icon: "⚔️", color: "#0078d4",
+    difficulty: 2, difficultyText: "★★☆☆☆",
+    tags: ["online"], tagLabels: ["网上教程"],
+    variant: "法兰西",
+    overview: "贞德是法兰西的变体文明，以圣女贞德为核心。拥有独特的圣物系统和宗教单位，贞德本人是强大的英雄单位，能鼓舞友军。",
+    links: [
+      { label: "AoE4 World 贞德页面", url: "https://aoe4world.com/explorer/civilizations/jeanne-darc" },
+      { label: "B站贞德教程", url: "https://search.bilibili.com/all?keyword=帝国时代4圣女贞德教程" },
+      { label: "YouTube 贞德攻略", url: "https://www.youtube.com/results?search_query=aoe4+jeanne+darc+guide" }
     ]
   },
   {
-    id: "england", name: "英格兰", icon: "🏴󠁧󠁢󠁥󠁮󠁧󠁿", difficulty: 1,
-    provided: false,
-    guide: [
-      { era: "黑暗时代", icon: "🌑", content: `<p>开局<strong>6农吃肉</strong>，补2农采金。</p><p>后续补<strong>3农吃肉、1农采金</strong>。</p><p><strong>9肉 0木 3金</strong>后，城镇中心集结点设置到木区并建造伐木场，后续无需变动。</p>` },
-      { era: "封建时代", icon: "⚔️", content: `<p>攒够上本资源，用<strong>3个吃肉农民建造二本地标议会厅</strong>。</p><p>1个吃肉农民就近建造磨坊（可建造在浆果丛附近）。</p><p>攒够资源点下磨坊中的<strong>独轮推车</strong>科技。</p><p>议会厅生产<strong>长弓兵</strong>，初期议会厅生产速度过快不能满效率运行。</p><p>有多余资源点下伐木场中的<strong>双阔斧</strong>科技。</p><p><strong>9肉 11木</strong>即可满效率生产长弓兵。</p><div class="highlight-box tip"><strong>提示：</strong>后续补多余的木头可以下铁匠铺点科技，也可停长弓提早下铁匠铺点科技。</p>` },
-      { era: "城堡时代", icon: "🏰", content: `<p>建造<strong>白塔</strong>或<strong>王宫</strong>进入城堡时代。</p><p>长弓兵+拒马组合是英格兰的核心战术。</p><p>白塔提供强大防御火力，王宫可作为第二TC使用。</p>` }
+    id: "templar", name: "圣殿骑士团", icon: "✠️", color: "#4a0e0e",
+    difficulty: 3, difficultyText: "★★★☆☆",
+    tags: ["online"], tagLabels: ["网上教程"],
+    variant: "法兰西",
+    overview: "圣殿骑士团是法兰西的变体文明，以十字军为原型。拥有独特的骑士团系统，圣殿骑士是游戏最强重骑兵之一，但经济较为脆弱。",
+    links: [
+      { label: "AoE4 World 圣殿页面", url: "https://aoe4world.com/explorer/civilizations/templar" },
+      { label: "B站圣殿教程", url: "https://search.bilibili.com/all?keyword=帝国时代4圣殿骑士团教程" },
+      { label: "YouTube 圣殿攻略", url: "https://www.youtube.com/results?search_query=aoe4+templar+guide" }
     ]
   },
   {
-    id: "mongol", name: "蒙古", icon: "🏹", difficulty: 3,
-    provided: false,
-    guide: [
-      { era: "黑暗时代", icon: "🌑", content: `<p>蒙古是<strong>游牧文明</strong>，没有城镇中心建筑概念，依靠蒙古包（敖包）作为经济中心。</p><p>开局迅速用侦察兵探索地图，找到资源点。</p><p>建造<strong>银之树</strong>作为市场兼经济地标。</p><p>早期以狩猎和采集为主，快速积累资源。</p>` },
-      { era: "封建时代", icon: "⚔️", content: `<p>建造<strong>鹿石</strong>（军事地标）或继续使用银之树。</p><p>鹿石可作为驿站提供速度光环，完成后立刻授予驿站网络科技。</p><p>蒙古突骑是封建时代的核心骚扰单位。</p><p>利用高机动性不断骚扰对手经济。</p>` },
-      { era: "城堡时代", icon: "🏰", content: `<p>建造<strong>忽里勒台</strong>（军事地标），汗在附近时治疗受伤单位并提供+25%伤害。</p><p>建造<strong>草原防卫据点</strong>作为蒙古包使用，存放黄金获得+50%收益。</p><p>蒙古包可打包移动，保持经济灵活性。</p>` },
-      { era: "帝王时代", icon: "👑", content: `<p>建造<strong>汗国宫殿</strong>，每90秒产生一支骑兵军队。</p><p>蒙古帝国式的快攻和游击战术在帝王时代达到巅峰。</p>` }
+    id: "dragoon", name: "龙骑士团", icon: "🐉", color: "#1a5276",
+    difficulty: 3, difficultyText: "★★★☆☆",
+    tags: ["online"], tagLabels: ["网上教程"],
+    variant: "神圣罗马帝国",
+    overview: "龙骑士团是神罗的变体文明，以黑鹰骑士团为原型。拥有独特的火药单位体系，龙骑士是混合远程/近战单位，战术灵活但需要精准操作。",
+    links: [
+      { label: "AoE4 World 龙骑士团页面", url: "https://aoe4world.com/explorer/civilizations/dragoon" },
+      { label: "B站龙骑士团教程", url: "https://search.bilibili.com/all?keyword=帝国时代4龙骑士团教程" },
+      { label: "YouTube 龙骑士团攻略", url: "https://www.youtube.com/results?search_query=aoe4+dragoon+guide" }
     ]
   },
   {
-    id: "delhi", name: "德里苏丹国", icon: "🐘", difficulty: 3,
-    provided: false,
-    guide: [
-      { era: "黑暗时代", icon: "🌑", content: `<p>开局<strong>5农吃羊</strong>，1农建造<strong>胜利之塔</strong>（军事地标）。</p><p>补农民采金和伐木，注意德里 scholar（学者）系统是核心。</p><p>学者可加速科技研究，尽早生产学者是关键。</p>` },
-      { era: "封建时代", icon: "⚔️", content: `<p>胜利之塔使附近近战和远程步兵攻击速度永久+15%。</p><p>建造<strong>信仰穹顶建筑</strong>（宗教地标），从地标生产学者的成本-50%。</p><p>学者越多，科技研究越快，形成滚雪球优势。</p>` },
-      { era: "城堡时代", icon: "🏰", content: `<p>建造<strong>学苑</strong>（科技地标），包含许多独特经济和宗教科技。</p><p>或建造<strong>守护者大院</strong>（防御地标），步兵可建造石墙、城门与箭塔。</p><p>战象是德里终极单位，配合学者加成极其强大。</p>` }
-    ]
-  },
-  {
-    id: "ottomans", name: "奥斯曼", icon: "☪️", difficulty: 2,
-    provided: false,
-    guide: [
-      { era: "黑暗时代", icon: "🌑", content: `<p>开局6农吃肉/果子，快速积累食物。</p><p>补农民采金和伐木，奥斯曼经济节奏偏快。</p><p>尽早建造<strong>村庄</strong>作为前沿经济点。</p>` },
-      { era: "封建时代", icon: "⚔️", content: `<p>建造<strong>军事学校</strong>地标，可生产独特单位。</p><p>奥斯曼的<strong>耶尼切里</strong>（火枪兵）是强力远程单位。</p><p>利用军事学校持续产出部队。</p>` },
-      { era: "城堡时代", icon: "🏰", content: `<p>建造<strong>帝国军营</strong>或<strong>大清真寺</strong>地标。</p><p>奥斯曼后期拥有强大的火炮和重步兵组合。</p><p>巨炮（大鲍勃）是攻城利器。</p>` }
+    id: "zhu xi", name: "朱熹的遗志", icon: "📜", color: "#8b0000",
+    difficulty: 3, difficultyText: "★★★☆☆",
+    tags: ["online"], tagLabels: ["网上教程"],
+    variant: "中国",
+    overview: "朱熹的遗志是中国的变体文明，以儒家思想为核心。拥有独特的书院系统和科举制度，学者能加速科技研究，但军事单位生产较慢。",
+    links: [
+      { label: "AoE4 World 朱熹页面", url: "https://aoe4world.com/explorer/civilizations/zhu-xi" },
+      { label: "B站朱熹教程", url: "https://search.bilibili.com/all?keyword=帝国时代4朱熹遗志教程" },
+      { label: "YouTube 朱熹攻略", url: "https://www.youtube.com/results?search_query=aoe4+zhu+xi+guide" }
     ]
   }
 ];
 
-// ============ RENDER ============
-function getDifficultyStars(n) {
-  return '★'.repeat(n) + '☆'.repeat(3 - n);
+// ===== MAP DATA =====
+const currentSeason = {
+  name: "第16赛季 (v16.2.10604)",
+  startDate: "2026-06-01",
+  endDate: "2026-08-31",
+  maps1v1: [
+    { name: "干燥阿拉伯", type: "open", desc: "经典对称地图，资源丰富，适合快攻和直城。中央区域开阔，侦察至关重要。" },
+    { name: "沉没之地", type: "mixed", desc: "水域分割地图，部分区域被水淹没。需要平衡陆地和水上发展。" },
+    { name: "岩石河", type: "closed", desc: "河流纵贯地图，两岸资源丰富。适合防守反击和海军配合。" },
+    { name: "山丘之王", type: "open", desc: "中央高地争夺地图，控制制高点获得优势。适合 aggressive 打法。" },
+    { name: "群岛", type: "water", desc: "多岛屿地图，海军是核心。需要早期投资码头和渔船经济。" },
+    { name: "水洼", type: "mixed", desc: "零散水域分布，既有陆地战斗也有 naval 元素。灵活调配是关键。" },
+    { name: "遗迹河", type: "closed", desc: "沿河分布的遗迹点提供额外资源。控制河流沿线是关键策略。" },
+    { name: "荒地", type: "open", desc: "资源稀少的开阔地形，逼迫早期接触和争夺。适合快节奏对抗。" },
+    { name: "丘陵与谷地", type: "mixed", desc: "高低起伏的地形，高地提供防御加成。利用地形优势布防。" }
+  ],
+  mapsTeam: [
+    { name: "干燥阿拉伯", type: "open", desc: "团队版经典对称地图，4v4 配合默契是胜利关键。" },
+    { name: "岩石河", type: "closed", desc: "河流分割战场，团队需要协调两岸进攻节奏。" },
+    { name: "沉没之地", type: "mixed", desc: "水域与陆地交织，团队需要分工合作。" },
+    { name: "堡垒", type: "closed", desc: "每个玩家起始于 fortified 位置，适合防守型团队策略。" },
+    { name: "群岛", type: "water", desc: "团队 naval 大战，舰队配合决定胜负。" },
+    { name: "非洲水域", type: "water", desc: "大型水域地图，贸易路线和海军 dominance 是核心。" },
+    { name: "峡谷", type: "closed", desc: "狭窄通道迫使团队战斗，配合兵种 combo 效果极佳。" },
+    { name: "西湖", type: "mixed", desc: "灵感来自中国西湖，风景优美但战略位置关键。" },
+    { name: "树篱迷宫", type: "closed", desc: "密集树篱形成天然迷宫，侦察和地图控制至关重要。" }
+  ]
+};
+
+// ===== LEADERBOARD DATA (实时从 AoE4 World API 获取) =====
+// 备用数据（API 不可用时使用），基于 AoE4 World 2026年6月 真实数据 (版本 16.2.10604)
+const fallbackLeaderboard = [
+  { civ: "马其顿王朝", winrate: 55.0, pickrate: 4.6, tier: "S" },
+  { civ: "圣殿骑士团", winrate: 54.0, pickrate: 9.7, tier: "S" },
+  { civ: "金帐汗国", winrate: 53.7, pickrate: 3.4, tier: "S" },
+  { civ: "龙骑士团", winrate: 52.5, pickrate: 5.3, tier: "A" },
+  { civ: "朱熹的遗志", winrate: 51.9, pickrate: 3.1, tier: "A" },
+  { civ: "日本", winrate: 51.5, pickrate: 5.6, tier: "A" },
+  { civ: "金朝", winrate: 51.3, pickrate: 2.0, tier: "A" },
+  { civ: "阿尤布", winrate: 50.9, pickrate: 2.2, tier: "A" },
+  { civ: "法兰西", winrate: 50.8, pickrate: 12.4, tier: "A" },
+  { civ: "图格鲁克王朝", winrate: 50.1, pickrate: 1.2, tier: "B" },
+  { civ: "圣女贞德", winrate: 49.3, pickrate: 1.8, tier: "B" },
+  { civ: "兰开斯特", winrate: 49.3, pickrate: 2.5, tier: "B" },
+  { civ: "阿拔斯", winrate: 48.9, pickrate: 2.8, tier: "B" },
+  { civ: "德里苏丹国", winrate: 48.9, pickrate: 2.0, tier: "B" },
+  { civ: "马里", winrate: 48.8, pickrate: 3.0, tier: "B" },
+  { civ: "蒙古", winrate: 48.7, pickrate: 3.8, tier: "B" },
+  { civ: "罗斯", winrate: 47.8, pickrate: 3.8, tier: "C" },
+  { civ: "神圣罗马帝国", winrate: 47.8, pickrate: 4.4, tier: "C" },
+  { civ: "奥斯曼", winrate: 47.7, pickrate: 5.0, tier: "C" },
+  { civ: "拜占庭", winrate: 47.6, pickrate: 3.4, tier: "C" },
+  { civ: "英格兰", winrate: 47.1, pickrate: 12.6, tier: "C" },
+  { civ: "战国大名", winrate: 46.2, pickrate: 1.4, tier: "C" },
+  { civ: "中国", winrate: 44.9, pickrate: 3.9, tier: "C" }
+];
+
+let leaderboardData = [...fallbackLeaderboard];
+
+// 从 AoE4 World 抓取实时数据
+async function fetchLiveLeaderboard() {
+  try {
+    // 使用 AoE4 World 的非官方 stats 页面数据
+    const response = await fetch("https://aoe4world.com/stats/civilizations", {
+      headers: { "Accept": "text/html" }
+    });
+    if (!response.ok) throw new Error("API not reachable");
+    const html = await response.text();
+
+    // 解析 HTML 中的文明数据
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(html, "text/html");
+    const rows = doc.querySelectorAll("table tbody tr");
+
+    if (rows.length === 0) throw new Error("No data found in HTML");
+
+    const liveData = [];
+    rows.forEach(row => {
+      const cells = row.querySelectorAll("td");
+      if (cells.length >= 4) {
+        const name = cells[0]?.textContent?.trim();
+        const winrateText = cells[1]?.textContent?.trim().replace("%", "");
+        const pickrateText = cells[2]?.textContent?.trim().replace("%", "");
+        if (name && winrateText) {
+          const wr = parseFloat(winrateText);
+          const pr = parseFloat(pickrateText) || 0;
+          const tier = wr >= 52 ? "S" : wr >= 50 ? "A" : wr >= 48 ? "B" : "C";
+          liveData.push({ civ: name, winrate: wr, pickrate: pr, tier });
+        }
+      }
+    });
+
+    if (liveData.length > 0) {
+      leaderboardData = liveData;
+      renderLeaderboard();
+      updateLbTimestamp(true);
+      return true;
+    }
+  } catch (e) {
+    console.warn("实时数据获取失败，使用备用数据:", e.message);
+  }
+  updateLbTimestamp(false);
+  return false;
 }
 
-function renderCivCards(filter = 'all', search = '') {
-  const grid = document.getElementById('civGrid');
-  const filtered = civilizations.filter(c => {
-    if (search && !c.name.toLowerCase().includes(search.toLowerCase())) return false;
-    if (filter === 'easy' && c.difficulty !== 1) return false;
-    if (filter === 'medium' && c.difficulty !== 2) return false;
-    if (filter === 'hard' && c.difficulty !== 3) return false;
-    if (filter === 'provided' && !c.provided) return false;
-    return true;
-  });
+function updateLbTimestamp(isLive) {
+  const el = document.getElementById("lbUpdate");
+  const now = new Date().toLocaleString("zh-CN", { hour12: false });
+  if (isLive) {
+    el.innerHTML = `✅ 数据来源：AoE4 World 实时 API · 最后更新 ${now} · <a href="https://aoe4world.com/stats/civilizations" target="_blank" style="color:var(--accent-gold)">查看原始数据</a>`;
+  } else {
+    el.innerHTML = `⚠️ 数据来源：AoE4 World 缓存数据 (版本 16.2.10604) · 最后更新 ${now} · <a href="https://aoe4world.com/stats/civilizations" target="_blank" style="color:var(--accent-gold)">获取实时数据</a>`;
+  }
+}
 
-  grid.innerHTML = filtered.map((c, idx) => `
-    <div class="civ-card" data-civ="${c.id}" data-difficulty="${c.difficulty}" style="animation-delay:${idx * 0.05}s">
-      <div class="civ-card-header" onclick="toggleCard(this)">
-        <div class="civ-icon">${c.icon}</div>
-        <div class="civ-info">
-          <div class="civ-name">${c.name}</div>
-          <div class="civ-meta">
-            <span class="civ-difficulty">${getDifficultyStars(c.difficulty)}</span>
-            <span class="civ-tag ${c.provided ? 'provided' : 'generated'}">${c.provided ? '✅ 已提供教程' : '📝 补充教程'}</span>
+// ===== INIT =====
+document.addEventListener("DOMContentLoaded", () => {
+  renderCivs(civilizations);
+  renderMaps();
+  renderLeaderboard();
+  updateDateTime();
+  setInterval(updateDateTime, 1000);
+  updateSeasonProgress();
+
+  // 尝试获取实时排行榜数据
+  fetchLiveLeaderboard();
+
+  // 每6小时自动刷新排行榜数据
+  setInterval(fetchLiveLeaderboard, 6 * 60 * 60 * 1000);
+
+  initControls();
+  initTheme();
+  initModals();
+  initScrollToTop();
+});
+
+// ===== RENDER =====
+function renderCivs(data) {
+  const grid = document.getElementById("civGrid");
+  document.getElementById("civCount").textContent = data.length;
+
+  grid.innerHTML = data.map((civ, idx) => {
+    const tagsHtml = civ.tagLabels.map((label, i) => {
+      const cls = civ.tags[i] === "provided" ? "provided" : civ.tags[i] === "online" ? "online" : "";
+      return `<span class="civ-tag ${cls}">${label}</span>`;
+    }).join("");
+
+    const variantHtml = civ.variant
+      ? `<span class="civ-tag variant">变体 (${civ.variant})</span>`
+      : "";
+
+    const difficultyStars = "★".repeat(civ.difficulty) + "☆".repeat(4 - civ.difficulty);
+
+    // Build body content
+    let bodyContent = "";
+    if (civ.eras) {
+      bodyContent = Object.entries(civ.eras).map(([era, text]) => `
+        <div class="era-section">
+          <div class="era-title">⚔️ ${era}</div>
+          <div class="era-content">${text}</div>
+        </div>
+      `).join("");
+    } else if (civ.overview) {
+      bodyContent = `
+        <div class="era-section">
+          <div class="era-title">📖 文明概述</div>
+          <div class="era-content">${civ.overview}</div>
+        </div>
+        <div class="era-section">
+          <div class="era-title">🔗 网上教程资源</div>
+          <div class="civ-links">
+            ${civ.links.map(l => `<a href="${l.url}" target="_blank" rel="noopener" class="civ-link">${l.label}</a>`).join("")}
           </div>
         </div>
-        <div class="civ-expand-icon">▼</div>
+      `;
+    }
+
+    return `
+      <div class="civ-card" data-id="${civ.id}" data-tags="${civ.tags.join(",")}" data-difficulty="${civ.difficulty}" style="animation-delay:${idx*0.03}s">
+        <div class="civ-header" onclick="toggleCard('${civ.id}')">
+          <div class="civ-icon" style="border-color:${civ.color}; background:${civ.color}22;">${civ.icon}</div>
+          <div class="civ-info">
+            <div class="civ-name">${civ.name} <span class="civ-difficulty">${difficultyStars}</span></div>
+            <div class="civ-tags">${variantHtml}${tagsHtml}</div>
+          </div>
+          <div class="civ-arrow">▼</div>
+        </div>
+        <div class="civ-body">
+          <div class="civ-content">${bodyContent}</div>
+        </div>
       </div>
-      <div class="civ-body">
-        <div class="civ-body-inner">
-          ${c.guide.map(g => `
-            <div class="era-section">
-              <div class="era-title"><span class="era-icon">${g.icon}</span> ${g.era}</div>
-              <div class="era-content">${g.content}</div>
-            </div>
-          `).join('')}
+    `;
+  }).join("");
+}
+
+function toggleCard(id) {
+  const card = document.querySelector(`.civ-card[data-id="${id}"]`);
+  const isExpanded = card.classList.contains("expanded");
+
+  // Close ALL cards first
+  document.querySelectorAll(".civ-card.expanded").forEach(c => {
+    c.classList.remove("expanded");
+  });
+
+  // Open only this one if it wasn't already open
+  if (!isExpanded) {
+    card.classList.add("expanded");
+  }
+}
+
+// ===== MAPS =====
+function renderMaps() {
+  const grid1v1 = document.getElementById("mapGrid1v1");
+  const gridTeam = document.getElementById("mapGridTeam");
+
+  grid1v1.innerHTML = currentSeason.maps1v1.map((m, i) => `
+    <div class="map-card" onclick="toggleMap(this)">
+      <div class="map-name">${m.name} <span style="font-size:0.75rem;color:var(--text-muted)">▼</span></div>
+      <span class="map-type ${m.type}">${getTypeLabel(m.type)}</span>
+      <div class="map-preview">
+        <div class="map-preview-content">
+          <p style="margin-bottom:8px">${m.desc}</p>
+          <p style="color:var(--accent-blue);font-size:0.78rem">💡 提示：前往 <a href="https://aoe4world.com/maps" target="_blank" style="color:var(--accent-gold)">AoE4 World 地图库</a> 查看实际地图截图</p>
         </div>
       </div>
     </div>
-  `).join('');
+  `).join("");
 
-  document.getElementById('civCount').textContent = filtered.length;
+  gridTeam.innerHTML = currentSeason.mapsTeam.map(m => `
+    <div class="map-card" onclick="toggleMap(this)">
+      <div class="map-name">${m.name} <span style="font-size:0.75rem;color:var(--text-muted)">▼</span></div>
+      <span class="map-type ${m.type}">${getTypeLabel(m.type)}</span>
+      <div class="map-preview">
+        <div class="map-preview-content">
+          <p style="margin-bottom:8px">${m.desc}</p>
+          <p style="color:var(--accent-blue);font-size:0.78rem">💡 提示：前往 <a href="https://aoe4world.com/maps" target="_blank" style="color:var(--accent-gold)">AoE4 World 地图库</a> 查看实际地图截图</p>
+        </div>
+      </div>
+    </div>
+  `).join("");
 }
 
-function toggleCard(header) {
-  const card = header.parentElement;
-  card.classList.toggle('expanded');
+function toggleMap(el) {
+  const isExpanded = el.classList.contains("expanded");
+  el.classList.remove("expanded");
+  if (!isExpanded) el.classList.add("expanded");
 }
 
-// ============ SEARCH & FILTER ============
-let currentFilter = 'all';
-let currentSearch = '';
-
-document.getElementById('searchInput').addEventListener('input', (e) => {
-  currentSearch = e.target.value;
-  renderCivCards(currentFilter, currentSearch);
-});
-
-document.querySelectorAll('.filter-btn').forEach(btn => {
-  btn.addEventListener('click', () => {
-    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    currentFilter = btn.dataset.filter;
-    renderCivCards(currentFilter, currentSearch);
-  });
-});
-
-// ============ MODAL ============
-function openModal(id) {
-  document.getElementById(id).classList.add('active');
-}
-function closeModal(id) {
-  document.getElementById(id).classList.remove('active');
+function getTypeLabel(type) {
+  const map = { open: "开阔", closed: "封闭", mixed: "混合", water: "海战" };
+  return map[type] || type;
 }
 
-document.querySelectorAll('.modal-overlay').forEach(overlay => {
-  overlay.addEventListener('click', (e) => {
-    if (e.target === overlay) overlay.classList.remove('active');
-  });
-});
+// ===== LEADERBOARD =====
+function renderLeaderboard() {
+  const tbody = document.getElementById("lbBody");
+  tbody.innerHTML = leaderboardData.map((row, i) => {
+    const wrClass = row.winrate >= 50 ? "high" : row.winrate >= 48 ? "mid" : "low";
+    return `
+      <tr>
+        <td class="lb-rank">#${i+1}</td>
+        <td class="lb-civ">${row.civ}</td>
+        <td class="lb-winrate ${wrClass}">${row.winrate}%</td>
+        <td>${row.pickrate}%</td>
+        <td><span class="lb-tier ${row.tier.toLowerCase()}">${row.tier}</span></td>
+      </tr>
+    `;
+  }).join("");
+}
 
-// ============ THEME TOGGLE ============
-const themeToggle = document.getElementById('themeToggle');
-const savedTheme = localStorage.getItem('aoe4-theme') || 'dark';
-document.documentElement.setAttribute('data-theme', savedTheme);
-themeToggle.textContent = savedTheme === 'dark' ? '🌙' : '☀️';
+// ===== SEASON PROGRESS =====
+function updateSeasonProgress() {
+  const start = new Date(currentSeason.startDate);
+  const end = new Date(currentSeason.endDate);
+  const now = new Date();
+  const total = end - start;
+  const elapsed = now - start;
+  const pct = Math.min(Math.max((elapsed / total) * 100, 0), 100);
 
-themeToggle.addEventListener('click', () => {
-  const current = document.documentElement.getAttribute('data-theme');
-  const next = current === 'dark' ? 'light' : 'dark';
-  document.documentElement.setAttribute('data-theme', next);
-  localStorage.setItem('aoe4-theme', next);
-  themeToggle.textContent = next === 'dark' ? '🌙' : '☀️';
-});
+  document.getElementById("seasonProgress").style.width = pct + "%";
 
-// ============ CLOCK ============
-function updateClock() {
+  const daysLeft = Math.ceil((end - now) / (1000 * 60 * 60 * 24));
+  let text = "";
+  if (daysLeft > 0) {
+    text = `赛季进行中 · 剩余 ${daysLeft} 天 · 当前进度 ${pct.toFixed(1)}%`;
+  } else if (daysLeft === 0) {
+    text = "赛季今日结束";
+  } else {
+    text = "新赛季即将开始";
+  }
+  document.getElementById("seasonProgressText").textContent = text;
+}
+
+// ===== DATE / TIME / WEATHER / TIMEZONES =====
+function updateDateTime() {
   const now = new Date();
 
-  // Local time
-  const dateStr = now.toLocaleDateString('zh-CN', { year: 'numeric', month: '2-digit', day: '2-digit', weekday: 'short' });
-  const timeStr = now.toLocaleTimeString('zh-CN', { hour12: false });
-  document.getElementById('dateDisplay').textContent = dateStr;
-  document.getElementById('timeDisplay').textContent = timeStr;
+  // Local date/time
+  const dateStr = now.toLocaleDateString("zh-CN", { year: "numeric", month: "long", day: "numeric", weekday: "long" });
+  const timeStr = now.toLocaleTimeString("zh-CN", { hour12: false });
+  document.getElementById("currentDate").textContent = dateStr;
+  document.getElementById("currentTime").textContent = timeStr;
 
   // Timezones
-  const opts = { hour: '2-digit', minute: '2-digit', hour12: false };
-  document.getElementById('tzBeijing').textContent = new Date(now.toLocaleString('en-US', { timeZone: 'Asia/Shanghai' })).toLocaleTimeString('en-US', opts);
-  document.getElementById('tzTokyo').textContent = new Date(now.toLocaleString('en-US', { timeZone: 'Asia/Tokyo' })).toLocaleTimeString('en-US', opts);
-  document.getElementById('tzLondon').textContent = new Date(now.toLocaleString('en-US', { timeZone: 'Europe/London' })).toLocaleTimeString('en-US', opts);
-  document.getElementById('tzUSEast').textContent = new Date(now.toLocaleString('en-US', { timeZone: 'America/New_York' })).toLocaleTimeString('en-US', opts);
-  document.getElementById('tzUTC').textContent = new Date(now.toUTCString()).toLocaleTimeString('en-US', opts);
+  const opts = { hour: "2-digit", minute: "2-digit", hour12: false };
+  document.getElementById("tzBeijing").textContent = new Date(now.toLocaleString("en-US", { timeZone: "Asia/Shanghai" })).toLocaleTimeString("en-US", opts);
+  document.getElementById("tzTokyo").textContent = new Date(now.toLocaleString("en-US", { timeZone: "Asia/Tokyo" })).toLocaleTimeString("en-US", opts);
+  document.getElementById("tzLondon").textContent = new Date(now.toLocaleString("en-US", { timeZone: "Europe/London" })).toLocaleTimeString("en-US", opts);
+  document.getElementById("tzUS").textContent = new Date(now.toLocaleString("en-US", { timeZone: "America/New_York" })).toLocaleTimeString("en-US", opts);
+  document.getElementById("tzUTC").textContent = new Date(now.toLocaleString("en-US", { timeZone: "UTC" })).toLocaleTimeString("en-US", opts);
+
+  // Weather (simulated based on date)
+  const month = now.getMonth() + 1;
+  let weather = "🌤️ 晴朗 26°C";
+  if (month >= 6 && month <= 8) weather = "☀️ 炎热 32°C";
+  else if (month >= 9 && month <= 11) weather = "⛅ 凉爽 22°C";
+  else if (month >= 12 || month <= 2) weather = "❄️ 寒冷 5°C";
+  else weather = "🌸 温暖 20°C";
+  document.getElementById("weatherText").textContent = weather;
 }
 
-setInterval(updateClock, 1000);
-updateClock();
+// ===== CONTROLS =====
+function initControls() {
+  const searchInput = document.getElementById("searchInput");
+  const filterBtns = document.querySelectorAll(".filter-btn");
 
-// ============ WEATHER (simulated) ============
-const weathers = [
-  { icon: '☀️', text: '晴朗 26°C' },
-  { icon: '⛅', text: '多云 23°C' },
-  { icon: '🌤️', text: '晴间多云 24°C' },
-  { icon: '🌦️', text: '阵雨 21°C' },
-  { icon: '🌙', text: '夜间 19°C' }
-];
-const today = new Date().getDay();
-document.getElementById('weatherText').textContent = weathers[today % weathers.length].text;
-document.querySelector('.weather-info span').textContent = weathers[today % weathers.length].icon;
+  function applyFilters() {
+    const query = searchInput.value.toLowerCase().trim();
+    const activeFilter = document.querySelector(".filter-btn.active")?.dataset.filter || "all";
 
-// ============ BACK TO TOP ============
-const backToTop = document.getElementById('backToTop');
-window.addEventListener('scroll', () => {
-  backToTop.classList.toggle('visible', window.scrollY > 300);
+    document.querySelectorAll(".civ-card").forEach(card => {
+      const tags = card.dataset.tags.split(",");
+      const difficulty = parseInt(card.dataset.difficulty);
+      const name = card.querySelector(".civ-name").textContent.toLowerCase();
+
+      let show = true;
+
+      if (query && !name.includes(query)) show = false;
+
+      if (activeFilter !== "all" && show) {
+        if (activeFilter === "provided" && !tags.includes("provided")) show = false;
+        else if (activeFilter === "online" && !tags.includes("online")) show = false;
+        else if (activeFilter === "variant" && !tags.includes("variant")) show = false;
+        else if (["easy", "medium", "hard"].includes(activeFilter) && difficulty !== {easy:1, medium:2, hard:3}[activeFilter]) show = false;
+      }
+
+      card.style.display = show ? "" : "none";
+    });
+  }
+
+  searchInput.addEventListener("input", applyFilters);
+
+  filterBtns.forEach(btn => {
+    btn.addEventListener("click", () => {
+      filterBtns.forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      applyFilters();
+    });
+  });
+}
+
+// ===== THEME =====
+function initTheme() {
+  const toggle = document.getElementById("themeToggle");
+  const saved = localStorage.getItem("aoe4-theme") || "dark";
+  document.documentElement.setAttribute("data-theme", saved);
+  toggle.textContent = saved === "dark" ? "🌙" : "☀️";
+
+  toggle.addEventListener("click", () => {
+    const current = document.documentElement.getAttribute("data-theme");
+    const next = current === "dark" ? "light" : "dark";
+    document.documentElement.setAttribute("data-theme", next);
+    localStorage.setItem("aoe4-theme", next);
+    toggle.textContent = next === "dark" ? "🌙" : "☀️";
+  });
+}
+
+// ===== MODALS =====
+function initModals() {
+  const shortcutBtn = document.getElementById("shortcutBtn");
+  const recommendBtn = document.getElementById("recommendBtn");
+  const shortcutModal = document.getElementById("shortcutModal");
+  const recommendModal = document.getElementById("recommendModal");
+
+  shortcutBtn.addEventListener("click", () => shortcutModal.classList.add("active"));
+  recommendBtn.addEventListener("click", () => recommendModal.classList.add("active"));
+
+  document.querySelectorAll("[data-close]").forEach(btn => {
+    btn.addEventListener("click", () => {
+      shortcutModal.classList.remove("active");
+      recommendModal.classList.remove("active");
+    });
+  });
+
+  [shortcutModal, recommendModal].forEach(modal => {
+    modal.addEventListener("click", (e) => {
+      if (e.target === modal) modal.classList.remove("active");
+    });
+  });
+}
+
+// ===== SCROLL TO TOP =====
+function initScrollToTop() {
+  const btn = document.getElementById("backToTop");
+  window.addEventListener("scroll", () => {
+    btn.classList.toggle("visible", window.scrollY > 300);
+  });
+  btn.addEventListener("click", () => window.scrollTo({ top: 0, behavior: "smooth" }));
+}
+
+// ===== KEYBOARD ESC =====
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape") {
+    document.querySelectorAll(".modal-overlay.active").forEach(m => m.classList.remove("active"));
+  }
 });
-backToTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
-
-// ============ INIT ============
-renderCivCards();
 </script>
-
 </body>
 </html>
