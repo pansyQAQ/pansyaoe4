@@ -315,6 +315,36 @@
     margin-top: 2px;
   }
 
+  /* ===== DISCLAIMER ===== */
+  .disclaimer-banner {
+    max-width: 1280px;
+    margin: 0 auto 0;
+    padding: 12px 20px;
+  }
+
+  .disclaimer-inner {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 12px 16px;
+    background: rgba(251,146,60,0.08);
+    border: 1px solid rgba(251,146,60,0.3);
+    border-radius: 10px;
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+    line-height: 1.6;
+  }
+
+  .disclaimer-icon {
+    font-size: 1.1rem;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  .disclaimer-text strong {
+    color: var(--orange);
+  }
+
   /* ===== CONTROLS BAR ===== */
   .controls {
     max-width: 1280px;
@@ -436,6 +466,11 @@
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
     gap: 16px;
+    align-items: start;
+  }
+
+  .civ-card {
+    align-self: start;
   }
 
   .civ-card {
@@ -696,6 +731,7 @@
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     gap: 10px;
+    align-items: start;
   }
 
   .map-card {
@@ -706,6 +742,7 @@
     cursor: pointer;
     transition: var(--transition);
     user-select: none;
+    align-self: start;
   }
 
   .map-card:hover {
@@ -1186,6 +1223,16 @@
   </div>
 </div>
 
+<!-- ===== DISCLAIMER ===== -->
+<div class="disclaimer-banner">
+  <div class="disclaimer-inner">
+    <span class="disclaimer-icon">⚠️</span>
+    <div class="disclaimer-text">
+      <strong>免责声明：</strong>本网站提供的所有文明开局部署流程均为参考教程，不一定是最佳或最优解。每局对战情况不同，请根据实战灵活变通，结合自身风格调整策略。更多流程请参考网上教程链接。
+    </div>
+  </div>
+</div>
+
 <!-- ===== CONTROLS ===== -->
 <div class="controls">
   <div class="search-box">
@@ -1391,7 +1438,9 @@ const civilizations = [
     tags: ["provided"], tagLabels: ["已提供教程"],
     variant: null,
     eras: {
-      "黑暗时代": "开局6农吃肉，补2农采金。\n第一个采金农民建造采矿场，第二个建造瓦兰吉军营。\n补完采金后补2农吃肉，此时8肉2金。\n补伐木农民（木区建造伐木场）。\n攒够封建资源，3农拍下二本地标大酒庄。\n有100木时金矿区建造哨塔。"
+      "黑暗时代": "开局6农吃肉，补2农采金。\n第一个采金农民建造采矿场，第二个建造瓦兰吉军营。\n补完采金后补2农吃肉，此时8肉2金。\n补伐木农民（木区建造伐木场）。\n攒够封建资源，3农拍下二本地标大酒庄。\n有100木时金矿区建造哨塔。",
+      "封建时代": "转移6个伐木农民建造瓦兰吉兵工厂（铁匠铺），然后去采金，此时8农采金。\n黄金富余可点下特制矿锄（采矿场）、独轮推车（大酒庄）、双阔斧（伐木场）、园艺学（大酒庄）。\n城镇中心集结点补吃肉，补到12农吃肉后继续补伐木。\n羊吃完木头多可种两块田，具体思路请看视频。\n白银充足可点下骑兵护甲血量科技。\n满足城堡时代资源条件，拉伐木农民建造金角塔，拍在资源点附近。\n采金农民补下2个马厩。",
+      "城堡时代": "双马厩出瑞塔利，大酒庄出僧侣控圣物。"
     }
   },
   {
@@ -1400,8 +1449,9 @@ const civilizations = [
     tags: ["provided"], tagLabels: ["已提供教程"],
     variant: null,
     eras: {
-      "封建时代": "转移6个伐木农民建造瓦兰吉兵工厂（铁匠铺），然后去采金，此时8农采金。\n黄金富余可点下特制矿锄（采矿场）、独轮推车（大酒庄）、双阔斧（伐木场）、园艺学（大酒庄）。\n城镇中心集结点补吃肉，补到12农吃肉后继续补伐木。\n羊吃完木头多可种两块田。\n白银充足可点下骑兵护甲血量科技。\n满足城堡时代资源条件，拉伐木农民建造金角塔，拍在资源点附近。\n采金农民补下2个马厩。",
-      "城堡时代": "双马厩出瑞塔利，大酒庄出僧侣控圣物。\n开局6农造磨坊吃羊，补2农采金（建造采矿场和房屋）。\n城镇中心补5农吃肉，补到11农吃肉，开始补伐木。\n5农建造二本地标翰林院，翰林院集结点设置到磨坊。\n翰林院生产朝廷命官，收税并监督磨坊（仔细观察有税就收，20sCD，收完监督）。\n伐够50木后建造房屋补充人口，后续伐够50木后建造伐木场。\n满足第二个封建时代地标资源后，2个采金农民建造烈日瓮城。\n拖6个吃肉农民，提交肉后采石。\n烈日瓮城建造完后采石。\n满足400木300石，建造第二个城镇中心。"
+      "黑暗时代": "开局6农造磨坊吃羊，补2农采金（建造采矿场和房屋）。\n城镇中心补5农吃肉，补到11农吃肉，开始补伐木。\n5农建造二本地标翰林院，翰林院集结点设置到磨坊。\n翰林院生产朝廷命官，收税并监督磨坊（仔细观察有税就收，20sCD，收完监督）。\n伐够50木后建造房屋补充人口，后续伐够50木后建造伐木场。",
+      "封建时代": "满足第二个封建时代地标资源后，2个采金农民建造烈日瓮城。\n拖6个吃肉农民，提交肉后采石。\n烈日瓮城建造完后采石。\n满足400木300石，建造第二个城镇中心。",
+      "城堡时代": "双马厩出瑞塔利，大酒庄出僧侣控圣物。"
     }
   },
   {
@@ -1422,8 +1472,7 @@ const civilizations = [
     variant: null,
     eras: {
       "黑暗时代": "开局6农吃羊，侦察兵绕家一圈牵羊，顺便找鹿。\n找到后6农建造磨坊吃鹿。\n补4农采金，建造采矿场和房屋。\n建造磨坊后点下生存技术，黄金充足后点下独轮推车。\n补4农吃羊，然后补3农砍树。\n满足吃肉条件，用4个吃羊农民建造封建时代地标（骑兵学校或者商会）。",
-      "封建时代（骑兵学校流）": "建造完地标的农民去伐木。\n点采矿科技，骑兵学校生产皇家骑士。\n补到8农采金。\n满足150木资源，建造地标转移去伐木的农民建造第二个马厩。\n随后去吃肉。\n双马厩大致调配为14肉8金。",
-      "封建时代（圣殿/法兰西公国流）": "6农吃肉补2农采金。\n补6农伐木。\n黄金才够200转移去采石。\n上本资源足够点下法兰西公国。\n将开局6个吃肉农民转去采石，城镇中心集结点改成肉。\n调配为1肉6木0金8石。\n上本选址开TC即可。"
+      "封建时代（骑兵学校流）": "建造完地标的农民去伐木。\n点采矿科技，骑兵学校生产皇家骑士。\n补到8农采金。\n满足150木资源，建造地标转移去伐木的农民建造第二个马厩。\n随后去吃肉。\n双马厩大致调配为14肉8金。"
     }
   },
   {
@@ -1479,6 +1528,19 @@ const civilizations = [
     }
   },
 
+  {
+    id: "temple", name: "圣殿（法兰西公国流）", icon: "⛪", color: "#0055a4",
+    difficulty: 2, difficultyText: "★★☆☆☆",
+    tags: ["online"], tagLabels: ["网上教程"],
+    variant: "法兰西",
+    overview: "法兰西的2TC（双城镇中心）开局部署流程，核心思路是快速铺开经济。通过法兰西公国地标实现快速扩张，适合喜欢经济碾压的玩家。以下为简要流程参考。",
+    quickGuide: "2TC流程：\n6农吃肉补2农采金。\n补6农伐木。\n黄金够200后转移去采石。\n上本资源足够点下法兰西公国。\n将开局6个吃肉农民转去采石，城镇中心集结点改成肉。\n调配为1肉、6木、0金、8石。\n上本选址开TC即可。",
+    links: [
+      { label: "AoE4 World 法兰西页面", url: "https://aoe4world.com/explorer/civilizations/french" },
+      { label: "B站法兰西2TC教程", url: "https://search.bilibili.com/all?keyword=帝国时代4法兰西2TC教程" },
+      { label: "YouTube French 2TC Guide", url: "https://www.youtube.com/results?search_query=aoe4+france+2tc+guide" }
+    ]
+  },
   // ===== 补充教程的文明 =====
   {
     id: "rus", name: "罗斯", icon: "🐻", color: "#1a5276",
@@ -1744,14 +1806,31 @@ function renderCivs(data) {
       bodyContent = Object.entries(civ.eras).map(([era, text]) => `
         <div class="era-section">
           <div class="era-title">⚔️ ${era}</div>
-          <div class="era-content">${text}</div>
+          <div class="era-content">${text.replace(/\n/g, '<br>')}</div>
         </div>
       `).join("");
+    } else if (civ.quickGuide) {
+      bodyContent = `
+        <div class="era-section">
+          <div class="era-title">📖 文明概述</div>
+          <div class="era-content">${civ.overview.replace(/\n/g, '<br>')}</div>
+        </div>
+        <div class="era-section">
+          <div class="era-title">⚔️ 简要流程</div>
+          <div class="era-content">${civ.quickGuide.replace(/\n/g, '<br>')}</div>
+        </div>
+        <div class="era-section">
+          <div class="era-title">🔗 网上教程资源</div>
+          <div class="civ-links">
+            ${civ.links.map(l => `<a href="${l.url}" target="_blank" rel="noopener" class="civ-link">${l.label}</a>`).join("")}
+          </div>
+        </div>
+      `;
     } else if (civ.overview) {
       bodyContent = `
         <div class="era-section">
           <div class="era-title">📖 文明概述</div>
-          <div class="era-content">${civ.overview}</div>
+          <div class="era-content">${civ.overview.replace(/\n/g, '<br>')}</div>
         </div>
         <div class="era-section">
           <div class="era-title">🔗 网上教程资源</div>
